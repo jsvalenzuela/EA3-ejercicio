@@ -296,7 +296,11 @@ io_salida:
         				tPrint.operator = TOP_PRINT;
         				if(getType($2) == 1)
         					tPrint.type = 'I';
-
+                else
+                {
+                        yyerror("La variable no fue declarada");
+                        exit(2);
+                }
                 tPrint.stringValue = malloc(strlen($2)+1);
                 strcpy(tPrint.stringValue, $2);
 
