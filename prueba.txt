@@ -1,6 +1,7 @@
 PRINT "FRASE A MOSTRAR"
 PRINT "TERCETO A MOSTRAR"
 READ variable
+PRINT variable
 
 
 

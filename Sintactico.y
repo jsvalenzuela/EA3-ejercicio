@@ -277,7 +277,7 @@ io_salida:
                 tPrint.isOperand = 0;
                 tPrint.isOperator = 1;
 				            tPrint.operator = TOP_PRINT;
-                tPrint.type = 'S';
+                tPrint.type = 'I';
                 tPrint.stringValue = malloc(strlen($2)+1);
                 strcpy(tPrint.stringValue, $2);
 
@@ -290,14 +290,13 @@ io_salida:
         } | PRINT ID {
                 //crearTerceto("PRINT", $2, "_", numeracionTercetos);
                 //numeracionTercetos = avanzarTerceto(numeracionTercetos);
-				Terceto tPrint;
-                tPrint.isOperand = 0;
-                tPrint.isOperator = 1;
-				tPrint.operator = TOP_PRINT;
-				if(getType($2) == 1)
-					tPrint.type = 'I';
-				else
-					tPrint.type = 'F';
+        				Terceto tPrint;
+                        tPrint.isOperand = 0;
+                        tPrint.isOperator = 1;
+        				tPrint.operator = TOP_PRINT;
+        				if(getType($2) == 1)
+        					tPrint.type = 'I';
+
                 tPrint.stringValue = malloc(strlen($2)+1);
                 strcpy(tPrint.stringValue, $2);
 
@@ -305,7 +304,7 @@ io_salida:
                 tPrint.tercetoID = PInd;
 
                 insertarTercetos(&aTercetos, tPrint);
-				numeracionTercetos = avanzarTerceto(numeracionTercetos);
+				        numeracionTercetos = avanzarTerceto(numeracionTercetos);
         };
 
 
