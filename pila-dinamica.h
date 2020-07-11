@@ -73,7 +73,6 @@ int ponerEnPila(pila *p, int dato){
 
 int ponerEnPilaS(pila_s *p, char * dato){
     t_nodo_s *nue = (t_nodo_s*)malloc(sizeof(t_nodo_s));
-	printf("pongo %s \n", dato);
 	if(nue == NULL)
 		return 0;
 	nue->info = strdup(dato);

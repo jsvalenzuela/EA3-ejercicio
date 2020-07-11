@@ -248,9 +248,15 @@ sentencia:
 io_lectura:
         READ ID {
 				Terceto tRead;
+                //uso la pila para declarar el id
+                //ponerEnPilaS(&pilaIDDeclare, $2);
+                //char *id = sacarDePilaS(&pilaIDDeclare);
+                //char *type = sacarDePilaS(&pilaTipoDeclare);
+                modifyTypeTs($2, "INTEGER");
+
                 tRead.isOperand = 0;
                 tRead.isOperator = 1;
-				tRead.operator = TOP_READ;
+				        tRead.operator = TOP_READ;
                 tRead.type = 'S';
                 tRead.stringValue = malloc(strlen($2)+1);
                 strcpy(tRead.stringValue, $2);
@@ -259,7 +265,7 @@ io_lectura:
                 tRead.tercetoID = PInd;
 
                 insertarTercetos(&aTercetos, tRead);
-				numeracionTercetos = avanzarTerceto(numeracionTercetos);
+				        numeracionTercetos = avanzarTerceto(numeracionTercetos);
         };
 
 io_salida:

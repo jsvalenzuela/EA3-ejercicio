@@ -95,7 +95,6 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						char* valueSinComillas = eliminar_comillas(aux);
 						char aux2[100];
 						strcpy(aux2,normalizarCadenaDeclaracion(valueSinComillas));
-						printf("CHu %s",aux2);
 						fprintf(fpAss, "\nDisplayString %s", valueSinComillas);
 						fprintf(fpAss, "\nnewLine 1");
 						printf("CHAUUUUUUU");
@@ -104,7 +103,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 				}
 				else if(operador == TOP_READ){
 					
-						fprintf(fpAss, "\nGetString %s ", a->array[i].stringValue);
+						fprintf(fpAss, "\nGetInteger %s ", a->array[i].stringValue);
 						fprintf(fpAss, "\nnewLine 1");
 					
 				}
@@ -400,9 +399,9 @@ void generarData(FILE *fpAss)
 		if(esLineaEncabezado == 0) {
             esLineaEncabezado = 1;
         } else {
-			if(strcmp(type, "FLOAT") == 0 || strcmp(type, "INTEGER") == 0 )
+			if(strstr (type, "INTEGER") )
 			{
-				fprintf(fpAss, "\n%s dd 0", word);
+				fprintf(fpAss, "\n%s db 0", word);
 			}
 			else if (strstr(type, "CONST_STRING") ) {
 				char* wordSinComillas = eliminar_comillas(word);
