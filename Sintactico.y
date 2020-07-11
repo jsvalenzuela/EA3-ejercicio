@@ -185,12 +185,12 @@ programa_aumentado:
         };
 
 programa:
-        declaraciones cuerpo
-        | declaraciones
+        //declaraciones cuerpo
+      //  | declaraciones
         | cuerpo;
 
 // Declaraciones
-declaraciones:
+/*declaraciones:
         VAR lista_linea_declaraciones ENDVAR;
 
 lista_linea_declaraciones:
@@ -234,7 +234,7 @@ tipo_dato:
         };
 
 //Fin Declaraciones
-
+*/
 //Seccion codigo
 cuerpo:
         cuerpo sentencia
