@@ -42,6 +42,9 @@ pila pilaRepeat;
 ArrayTercetos aTercetos;
 
 t_cola colaId;
+t_cola listaCola;
+
+
 
 struct ifs {
 	int posicion;
@@ -70,6 +73,7 @@ int main()
 {
         clean();
         crearTercetos(&aTercetos, 100);
+        crearCola(&listaCola);
         crearPila(&pilaRepeat);
         crearPila(&pilaFactor);
         crearPila(&pilaID);
@@ -128,6 +132,7 @@ void pprintff(float str) {
         char* valor_comparacion;
         int TLind = -1;
         int TLSalto = -1;
+        int contarInd = -1;
 	int Find1 = -1;
 	int cant_if=0;
 	int i=0;
@@ -142,7 +147,7 @@ void pprintff(float str) {
 	int Auxind3=-1;
 %}
 
-%type <intValue> CONST_INT
+%type <intValue> CTE
 %type <stringValue> ID CONST_STRING TIPO_INTEGER TIPO_STRING
 
 // Sector declaraciones
@@ -169,13 +174,15 @@ void pprintff(float str) {
 %token ID OP_ASIG
 
 // Constantes
-%token CONST_STRING CONST_INT CONST_FLOAT
+%token CONST_STRING CTE CONST_FLOAT
 
 // Operadores
 //%token OP_MULTIPLICACION OP_SUMA OP_RESTA OP_DIVISION
 
 // Parentesis, corchetes, otros caracteres
-%token PARENTESIS_ABRE PARENTESIS_CIERRA CORCHETE_ABRE CORCHETE_CIERRA COMA DOS_PUNTOS
+%token PARA PARC CA CC COMA PYC
+
+%token CONTAR
 
 %start programa_aumentado
 %%
@@ -241,9 +248,8 @@ cuerpo:
         | sentencia;
 
 sentencia:
-        asignacion
-        | io_lectura
-        | io_salida;
+        io_lectura
+        | io_salida | contar;
 
 io_lectura:
         READ ID {
@@ -277,7 +283,7 @@ io_salida:
                 tPrint.isOperand = 0;
                 tPrint.isOperator = 1;
 				            tPrint.operator = TOP_PRINT;
-                tPrint.type = 'I';
+                tPrint.type = 'S';
                 tPrint.stringValue = malloc(strlen($2)+1);
                 strcpy(tPrint.stringValue, $2);
 
@@ -314,7 +320,7 @@ io_salida:
 
 
 asignacion:
-        ID {
+       ID {
                 if(getType($1) == 0)
                 {
                         yyerror("La variable no fue declarada");
@@ -401,8 +407,42 @@ asignacion:
         };
 
 
+contar:
+        CONTAR PARA ID PYC CA lista CC PARC
+        {
+           Terceto tContar;
+          if(getType($3) == 1)
+            tContar.type = 'I';
+
+          else
+          {
+                  yyerror("La variable no fue declarada para el contar");
+                  exit(2);
+          }
+
+              /*tContar.isOperand = 0;
+              tContar.isOperator = 1;
+              tContar.operator = 12;
+
+              contarInd = crearTercetoInt($1, $3, "lista", numeracionTercetos);
+               tContar.tercetoID = contarInd;
+
+               // Inserto en la lista
+               insertarTercetos(&aTercetos, tContar);
+
+               // Pido la nueva numeracion
+               numeracionTercetos = avanzarTerceto(numeracionTercetos);*/
 
 
+        };
+
+lista:
+      CTE {
+          ponerEncola(&listaCola,$1);
+      }| lista COMA CTE
+      {
+          ponerEncola(&listaCola,$3);
+      } ;
 
 
 
@@ -419,24 +459,7 @@ termino:
         };
 
 factor:
-        CONST_INT {
-                Terceto tConstInt;
-                tConstInt.intValue = $1;
-                tConstInt.type = 'I';
-                tConstInt.isOperand = 1;
-
-                Find = crearTercetoInt($1, "_", "_", numeracionTercetos);
-                tConstInt.tercetoID = Find;
-
-                // Inserto en la lista
-                insertarTercetos(&aTercetos, tConstInt);
-
-                // Pido la nueva numeracion
-                numeracionTercetos = avanzarTerceto(numeracionTercetos);
-				verificarTipoDato(1);
-                status("int a factor");
-        }
-        | ID {
+       ID {
                 // POC - Tercetos
                 Terceto tId;
                 tId.stringValue = malloc(strlen($1)+1);
@@ -460,8 +483,8 @@ factor:
 				}
 				verificarTipoDato(getType($1));
                 status("id a factor");
-        }
-        | PARENTESIS_ABRE expresion PARENTESIS_CIERRA {
+        };
+        /*| PARENTESIS_ABRE expresion PARENTESIS_CIERRA {
                 Find = Eind;
                 status("pa expresion pc a factor");
         }
@@ -494,7 +517,7 @@ factor:
                 insertarTercetos(&aTercetos, tOpAsignacion);
                 numeracionTercetos = avanzarTerceto(numeracionTercetos);
 
-				};
+				};*/
 
 %%
 

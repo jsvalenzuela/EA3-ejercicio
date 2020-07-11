@@ -14,6 +14,7 @@
 #define ERR_STRING_LENGTH "Cadena de caracteres mayor a 30"
 #define ERR_INT_MAX "Entero fuera de rango de los 16 bits (sin signo)"
 #define ERR_FLT_MAX "Float fuera de rango de los 32 bits"
+#define DIGITO_MAX "Digito fuera de rango"
 #define TYPE_ID 1
 #define TYPE_FLOAT 2
 #define TYPE_STRING 3
@@ -53,19 +54,19 @@ int validType(char *text, int type)
         }
         break;
     case TYPE_INT:
-        if (atoi(text) > 65535)
+        if (atoi(text) > 9)
         {
-            printError(ERR_INT_MAX, text);
+            printError(DIGITO_MAX, text);
             exit(0);
         }
         else
         {
-			char str1[16];
+			/*char str1[16];
 		    char str2[16];
 		    strcpy(str1, "_");
 		    strcpy(str2, text);
 		    strcat(str1, str2);
-            insertInTs(str1, "CONST_INT", text, "");
+            insertInTs(str1, "CONST_INT", text, "");*/
         }
         break;
     case TYPE_FLOAT:

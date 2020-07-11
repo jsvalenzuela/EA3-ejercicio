@@ -84,6 +84,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						fprintf(fpAss, "\nnewLine 1");
 					}
 					else if (a->array[i].type == 'I'){
+						printf("COMPILE PIOLA GATO");
 						fprintf(fpAss, "\nDisplayInteger %s,2", a->array[i].stringValue);
 						fprintf(fpAss, "\nnewLine 1");
 					}
@@ -97,7 +98,6 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						strcpy(aux2,normalizarCadenaDeclaracion(valueSinComillas));
 						fprintf(fpAss, "\nDisplayString %s", valueSinComillas);
 						fprintf(fpAss, "\nnewLine 1");
-						printf("CHAUUUUUUU");
 					}
 					
 				}
