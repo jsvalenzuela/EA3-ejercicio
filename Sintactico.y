@@ -186,8 +186,8 @@ programa_aumentado:
 
 programa:
         //declaraciones cuerpo
-      //  | declaraciones
-        | cuerpo;
+      //  | declaraciones|
+      cuerpo;
 
 // Declaraciones
 /*declaraciones:
@@ -267,10 +267,10 @@ io_salida:
                 //crearTerceto("PRINT", $2, "_", numeracionTercetos);
                 //numeracionTercetos = avanzarTerceto(numeracionTercetos);
 
-				Terceto tPrint;
+				            Terceto tPrint;
                 tPrint.isOperand = 0;
                 tPrint.isOperator = 1;
-				tPrint.operator = TOP_PRINT;
+				            tPrint.operator = TOP_PRINT;
                 tPrint.type = 'S';
                 tPrint.stringValue = malloc(strlen($2)+1);
                 strcpy(tPrint.stringValue, $2);
