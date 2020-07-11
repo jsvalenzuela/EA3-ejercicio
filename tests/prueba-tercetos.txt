@@ -1,0 +1,6 @@
+VAR 
+    [INTEGER] : [varMod]
+ENDVAR
+
+varMod := 1
+varMod := varMod + 2

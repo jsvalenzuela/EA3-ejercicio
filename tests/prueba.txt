@@ -1,0 +1,8 @@
+VAR 
+    [INTEGER, INTEGER, INTEGER, INTEGER, INTEGER] : [pepe1, pepe2,pepe3,pepe4,pepe5]
+ENDVAR
+
+pepe1 := 10
+
+PRINT pepe1
+

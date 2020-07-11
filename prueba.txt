@@ -1,0 +1,7 @@
+READ input2
+WRITE "ALGO"
+
+
+
+
+

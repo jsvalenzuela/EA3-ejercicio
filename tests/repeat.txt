@@ -1,0 +1,4 @@
+REPEAT
+varMod := 1
+varMod := varMod + 1
+UNTIL varMod > 3
