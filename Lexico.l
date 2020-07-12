@@ -20,7 +20,7 @@ CTE 					{DIGITO}
 "ENDVAR"                                return ENDVAR;
 "WRITE"                                 return WRITE;
 "READ"                                  return READ;
-":="                                    return OP_ASIG;
+"="                                     return ASIG;
 "("                                     return PARA;
 ")"                                     return PARC;
 "["                                     return CA;

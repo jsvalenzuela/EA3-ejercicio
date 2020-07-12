@@ -171,7 +171,7 @@ void pprintff(float str) {
 //%token MOD DIV
 
 // Asignacion
-%token ID OP_ASIG
+%token ID ASIG
 
 // Constantes
 %token CONST_STRING CTE CONST_FLOAT
@@ -249,7 +249,7 @@ cuerpo:
 
 sentencia:
         io_lectura
-        | io_salida | contar;
+        | io_salida | asig;
 
 io_lectura:
         READ ID {
@@ -356,6 +356,12 @@ io_salida:
                   status("LISYA");
               } ;
 
+        asig:
+              ID {
+                  modifyTypeTs($1, "INTEGER");
+                }ASIG contar{
+
+              };
 /*asignacion:
        ID {
                 if(getType($1) == 0)
