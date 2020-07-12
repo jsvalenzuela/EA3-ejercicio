@@ -1,5 +1,5 @@
-PRINT "FRASE A MOSTRAR"
-PRINT "TERCETO A"
+WRITE "FRASE A MOSTRAR"
+WRITE "TERCETO A"
 READ variable
-PRINT variable
+WRITE variable
 CONTAR (variable; [2,3,4,5])

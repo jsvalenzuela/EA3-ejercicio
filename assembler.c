@@ -84,7 +84,6 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						fprintf(fpAss, "\nnewLine 1");
 					}
 					else if (a->array[i].type == 'I'){
-						printf("COMPILE PIOLA GATO");
 						fprintf(fpAss, "\nDisplayInteger %s,2", a->array[i].stringValue);
 						fprintf(fpAss, "\nnewLine 1");
 					}
@@ -395,7 +394,6 @@ void generarData(FILE *fpAss)
         //sscanf(linea, "'%s' %s '%s' %s", word, type, value, length);
 		fscanf(fpTs,"%35[^\n]%20[^\n]%45[^\n]%20[^\n]\n", word, type, value, length);
 		//fscanf(fpTs,"%[^\n]%[^\n]%[^\n]%[^\n]\n", word, type, value, length);
-		printf("Valor  name leido es %s", type);
 		if(esLineaEncabezado == 0) {
             esLineaEncabezado = 1;
         } else {

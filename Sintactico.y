@@ -165,7 +165,7 @@ void pprintff(float str) {
 //%token REPEAT UNTIL
 
 // I/O
-%token PRINT READ
+%token WRITE READ
 
 // MOD / DIV
 //%token MOD DIV
@@ -275,7 +275,7 @@ io_lectura:
         };
 
 io_salida:
-        PRINT CONST_STRING {
+        WRITE CONST_STRING {
                 //crearTerceto("PRINT", $2, "_", numeracionTercetos);
                 //numeracionTercetos = avanzarTerceto(numeracionTercetos);
 
@@ -287,13 +287,13 @@ io_salida:
                 tPrint.stringValue = malloc(strlen($2)+1);
                 strcpy(tPrint.stringValue, $2);
 
-                PInd = crearTerceto("PRINT", $2, "_", numeracionTercetos);;
+                PInd = crearTerceto("WRITE", $2, "_", numeracionTercetos);;
                 tPrint.tercetoID = PInd;
 
                 insertarTercetos(&aTercetos, tPrint);
 				numeracionTercetos = avanzarTerceto(numeracionTercetos);
 
-        } | PRINT ID {
+        } | WRITE ID {
                 //crearTerceto("PRINT", $2, "_", numeracionTercetos);
                 //numeracionTercetos = avanzarTerceto(numeracionTercetos);
         				Terceto tPrint;
@@ -310,7 +310,7 @@ io_salida:
                 tPrint.stringValue = malloc(strlen($2)+1);
                 strcpy(tPrint.stringValue, $2);
 
-                PInd = crearTerceto("PRINT", $2, "_", numeracionTercetos);;
+                PInd = crearTerceto("WRITE", $2, "_", numeracionTercetos);;
                 tPrint.tercetoID = PInd;
 
                 insertarTercetos(&aTercetos, tPrint);

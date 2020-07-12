@@ -18,7 +18,7 @@ CTE 					{DIGITO}
 %%
 "VAR"                                   return VAR;
 "ENDVAR"                                return ENDVAR;
-"PRINT"                                 return PRINT;
+"WRITE"                                 return WRITE;
 "READ"                                  return READ;
 ":="                                    return OP_ASIG;
 "("                                     return PARA;
