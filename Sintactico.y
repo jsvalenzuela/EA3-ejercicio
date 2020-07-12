@@ -145,6 +145,8 @@ void pprintff(float str) {
 	int Auxind=-1;
 	int Auxind2=-1;
 	int Auxind3=-1;
+  int cantidadElementosLista = 0;
+  char elementosListaContar[100];
 %}
 
 %type <intValue> CTE
@@ -192,56 +194,8 @@ programa_aumentado:
         };
 
 programa:
-        //declaraciones cuerpo
-      //  | declaraciones|
       cuerpo;
 
-// Declaraciones
-/*declaraciones:
-        VAR lista_linea_declaraciones ENDVAR;
-
-lista_linea_declaraciones:
-        lista_linea_declaraciones linea_declaraciones
-        | linea_declaraciones;
-
-linea_declaraciones:
-        //CORCHETE_ABRE {
-              //  crearPilaS(&pilaIDDeclare);
-              //  crearPilaS(&pilaTipoDeclare);
-        //} lista_tipo_datos CORCHETE_CIERRA DOS_PUNTOS CORCHETE_ABRE lista_id CORCHETE_CIERRA {
-          {
-           crearPilaS(&pilaIDDeclare);
-           crearPilaS(&pilaTipoDeclare);
-          }
-           tipo_dato DOS_PUNTOS lista_id {
-                while(!pilaVaciaS(&pilaIDDeclare) && !pilaVaciaS(&pilaTipoDeclare)){
-                        char *id = sacarDePilaS(&pilaIDDeclare);
-                        char *type = sacarDePilaS(&pilaTipoDeclare);
-                        modifyTypeTs(id, type);
-                }
-        };
-
-//lista_tipo_datos:
-//        tipo_dato;
-
-lista_id:
-        lista_id COMA ID {
-                ponerEnPilaS(&pilaIDDeclare, $3);
-        }
-        | ID {
-                ponerEnPilaS(&pilaIDDeclare, $1);
-        };
-
-tipo_dato:
-        TIPO_INTEGER {
-                ponerEnPilaS(&pilaTipoDeclare, $1);
-        }
-        | TIPO_STRING {
-                ponerEnPilaS(&pilaTipoDeclare, $1);
-        };
-
-//Fin Declaraciones
-*/
 //Seccion codigo
 cuerpo:
         cuerpo sentencia
@@ -349,11 +303,14 @@ io_salida:
 
         lista:
               CTE {
-                  ponerEncola(&listaCola,$1);
+                  char valorcte[10];
+                  itoa ($1,valorcte,10);
+                  ponerEncola(&listaCola,valorcte);
               }| lista COMA CTE
               {
-                  ponerEncola(&listaCola,$3);
-                  status("LISYA");
+                char valorcte1[10];
+                itoa ($3,valorcte1,10);
+                ponerEncola(&listaCola,valorcte1);
               } ;
 
         asig:
@@ -372,182 +329,28 @@ io_salida:
 
                   //reiniciarTipoDato();
                 }ASIG contar{
+                  pprintf("adentro");
                   Terceto tOpAsignacion;
                   tOpAsignacion.isOperator = 1;
                   tOpAsignacion.isOperand = 0;
                   tOpAsignacion.operator = TOP_ASIG;
                   tOpAsignacion.left = AIind;
                   tOpAsignacion.right = contarInd;
-
                   Aind = crearTercetoOperacion(":=", AIind, contarInd, numeracionTercetos);
                   tOpAsignacion.tercetoID = Aind;
-
                   insertarTercetos(&aTercetos, tOpAsignacion);
                   numeracionTercetos = avanzarTerceto(numeracionTercetos);
+                 pprintf("asd");
+                  while(!colaVacia(&listaCola))
+                  {
+                      char auxCola[10];
+                      strcpy(auxCola,sacarDecola(&listaCola));
+                      status(auxCola);
+                      cantidadElementosLista++;
+                  }
+                    pprintf("chauuuauaua");
+                  //Agrego los contadores al codigo
               };
-/*asignacion:
-       ID {
-                if(getType($1) == 0)
-                {
-                        yyerror("La variable no fue declarada");
-                        exit(2);
-                }
-                Terceto tIdAsignacion;
-                tIdAsignacion.isOperand = 1;
-                tIdAsignacion.isOperator = 0;
-                tIdAsignacion.type = 'S';
-                tIdAsignacion.stringValue = malloc(strlen($1)+1);
-                strcpy(tIdAsignacion.stringValue, $1);
-
-                AIind = crearTerceto($1, "_", "_", numeracionTercetos);
-                tIdAsignacion.tercetoID = AIind;
-
-                insertarTercetos(&aTercetos, tIdAsignacion);
-
-                numeracionTercetos = avanzarTerceto(numeracionTercetos);
-
-                reiniciarTipoDato();
-        } OP_ASIG expresion {
-                if(getType($1) != tipoDatoActual){
-                        yyerror("No se pueden asignar variables de distintos tipos");
-                        exit(0);
-                }
-                Terceto tOpAsignacion;
-                tOpAsignacion.isOperator = 1;
-                tOpAsignacion.isOperand = 0;
-                tOpAsignacion.operator = TOP_ASIG;
-                tOpAsignacion.left = AIind;
-                tOpAsignacion.right = Eind;
-
-                Aind = crearTercetoOperacion(":=", AIind, Eind, numeracionTercetos);
-                tOpAsignacion.tercetoID = Aind;
-
-                insertarTercetos(&aTercetos, tOpAsignacion);
-                numeracionTercetos = avanzarTerceto(numeracionTercetos);
-        }
-        | TIPO_STRING ID OP_ASIG CONST_STRING {
-
-                Terceto tIdAsignacionString;
-                tIdAsignacionString.isOperand = 1;
-                tIdAsignacionString.isOperator = 0;
-                tIdAsignacionString.type = 'S';
-                tIdAsignacionString.stringValue = malloc(strlen($2)+1);
-                strcpy(tIdAsignacionString.stringValue, $2);
-
-                ASInd = crearTerceto($2, "_", "_", numeracionTercetos);
-                tIdAsignacionString.tercetoID = AIind;
-
-                insertarTercetos(&aTercetos, tIdAsignacionString);
-
-                numeracionTercetos = avanzarTerceto(numeracionTercetos);
-
-
-                // Ingreso la string a asignar a los tercetos
-                Terceto tStringAsignada;
-                tStringAsignada.isOperator = 0;
-                tStringAsignada.isOperand = 1;
-                tStringAsignada.stringValue = malloc(strlen($4)+1);
-                tStringAsignada.type = 'S';
-                strcpy(tStringAsignada.stringValue, $4);
-
-                ASSind = crearTerceto($4, "_", "_", numeracionTercetos);
-                tStringAsignada.tercetoID = ASSind;
-
-                insertarTercetos(&aTercetos, tStringAsignada);
-
-                numeracionTercetos = avanzarTerceto(numeracionTercetos);
-
-
-                Terceto tOpAsignacion;
-                tOpAsignacion.isOperator = 1;
-                tOpAsignacion.isOperand = 0;
-                tOpAsignacion.operator = TOP_ASIG;
-                tOpAsignacion.left = ASInd;
-                tOpAsignacion.right = ASSind;
-
-                Aind = crearTercetoOperacion(":=", ASInd, ASSind, numeracionTercetos);
-                tOpAsignacion.tercetoID = Aind;
-
-                insertarTercetos(&aTercetos, tOpAsignacion);
-                numeracionTercetos = avanzarTerceto(numeracionTercetos);
-        };
-
-*/
-
-
-
-/*expresion:
-         termino {
-                Eind = Tind;
-                status("termino a exp");
-        };
-
-termino:
-       factor {
-                Tind = Find;
-                status("factor a termino");*/
-      //  };
-
-/*factor:
-       ID {
-                // POC - Tercetos
-                Terceto tId;
-                tId.stringValue = malloc(strlen($1)+1);
-                strcpy(tId.stringValue, $1);
-                tId.type = 'S';
-                tId.isOperand = 1;
-
-
-                Find = crearTerceto($1, "_", "_", numeracionTercetos);
-                ponerEnPila(&pilaFactor, Find);
-                tId.tercetoID = Find;
-
-                insertarTercetos(&aTercetos, tId);
-                free(tId.stringValue);
-                // fin POC
-
-                numeracionTercetos = avanzarTerceto(numeracionTercetos);
-				if(getType($1) == 0){
-					yyerror("La variable no fue declarada");
-					exit(0);
-				}
-				verificarTipoDato(getType($1));
-                status("id a factor");
-        };
-        /*| PARENTESIS_ABRE expresion PARENTESIS_CIERRA {
-                Find = Eind;
-                status("pa expresion pc a factor");
-        }
-        | PARENTESIS_ABRE expresion {Find1=Eind;
-				//Asignamos a una auxilar 1
-				Terceto tIdAsignacion;
-                tIdAsignacion.isOperand = 1;
-                tIdAsignacion.isOperator = 0;
-                tIdAsignacion.type = 'S';
-                tIdAsignacion.stringValue = malloc(strlen("auxMod0")+1);
-                strcpy(tIdAsignacion.stringValue, "auxMod0");
-
-                Auxind=crearTerceto("auxMod0", "_", "_", numeracionTercetos);
-                tIdAsignacion.tercetoID = Auxind;
-
-                insertarTercetos(&aTercetos, tIdAsignacion);
-
-				numeracionTercetos = avanzarTerceto(numeracionTercetos);
-
-				Terceto tOpAsignacion;
-                tOpAsignacion.isOperator = 1;
-                tOpAsignacion.isOperand = 0;
-                tOpAsignacion.operator = TOP_ASIG;
-                tOpAsignacion.left = Auxind;
-                tOpAsignacion.right = Find1;
-
-                Tind1 = crearTercetoOperacion(":=", Auxind, Find1, numeracionTercetos);
-                tOpAsignacion.tercetoID = Tind1;
-
-                insertarTercetos(&aTercetos, tOpAsignacion);
-                numeracionTercetos = avanzarTerceto(numeracionTercetos);
-
-				};*/
 
 %%
 
