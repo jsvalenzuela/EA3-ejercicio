@@ -317,9 +317,46 @@ io_salida:
 				        numeracionTercetos = avanzarTerceto(numeracionTercetos);
         };
 
+        contar:
+                CONTAR PARA ID PYC CA lista CC PARC
+                {
+                  status("CONTAR");
+                   Terceto tContar;
+                  if(getType($3) == 1)
+                    tContar.type = 'I';
+                  else
+                  {
+                          yyerror("La variable no fue declarada para el contar");
+                          exit(2);
+                  }
+                      tContar.isOperand = 0;
+                      tContar.isOperator = 1;
+                      tContar.operator = 12;
+                      status("CONTAR");
+                      char nombreTerceto[50];
+
+                      contarInd = crearTerceto("CONTAR", $3, "lista", numeracionTercetos);
+                       tContar.tercetoID = contarInd;
+
+                       // Inserto en la lista
+                       insertarTercetos(&aTercetos, tContar);
+
+                       // Pido la nueva numeracion
+                       numeracionTercetos = avanzarTerceto(numeracionTercetos);
 
 
-asignacion:
+                };
+
+        lista:
+              CTE {
+                  ponerEncola(&listaCola,$1);
+              }| lista COMA CTE
+              {
+                  ponerEncola(&listaCola,$3);
+                  status("LISYA");
+              } ;
+
+/*asignacion:
        ID {
                 if(getType($1) == 0)
                 {
@@ -406,47 +443,11 @@ asignacion:
                 numeracionTercetos = avanzarTerceto(numeracionTercetos);
         };
 
-
-contar:
-        CONTAR PARA ID PYC CA lista CC PARC
-        {
-           Terceto tContar;
-          if(getType($3) == 1)
-            tContar.type = 'I';
-
-          else
-          {
-                  yyerror("La variable no fue declarada para el contar");
-                  exit(2);
-          }
-
-              /*tContar.isOperand = 0;
-              tContar.isOperator = 1;
-              tContar.operator = 12;
-
-              contarInd = crearTercetoInt($1, $3, "lista", numeracionTercetos);
-               tContar.tercetoID = contarInd;
-
-               // Inserto en la lista
-               insertarTercetos(&aTercetos, tContar);
-
-               // Pido la nueva numeracion
-               numeracionTercetos = avanzarTerceto(numeracionTercetos);*/
-
-
-        };
-
-lista:
-      CTE {
-          ponerEncola(&listaCola,$1);
-      }| lista COMA CTE
-      {
-          ponerEncola(&listaCola,$3);
-      } ;
+*/
 
 
 
-expresion:
+/*expresion:
          termino {
                 Eind = Tind;
                 status("termino a exp");
@@ -455,10 +456,10 @@ expresion:
 termino:
        factor {
                 Tind = Find;
-                status("factor a termino");
-        };
+                status("factor a termino");*/
+      //  };
 
-factor:
+/*factor:
        ID {
                 // POC - Tercetos
                 Terceto tId;

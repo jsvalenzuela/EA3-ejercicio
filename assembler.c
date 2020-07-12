@@ -11,15 +11,15 @@ void generarAssembler(ArrayTercetos *a)
 	fprintf(fpAss, ".MODEL SMALL \n");
 	fprintf(fpAss, ".386\n");
 	fprintf(fpAss, ".STACK 200h \n");
-    
+
 	generarData(fpAss);
-	
+
     fprintf(fpAss, "\n.CODE \n");
     fprintf(fpAss, "\t MOV AX,@DATA 	;inicializa el segmento de datos\n");
     fprintf(fpAss, "\t MOV DS,AX \n");
-    fprintf(fpAss, "\t FINIT \n");;
+    fprintf(fpAss, "\t MOV es,ax\n");
     fprintf(fpAss, "\n");
-	
+
     generarCode(fpAss, a);
 	/*generamos el final */
 	fprintf(fpAss, "\n mov ah, 1 ; pausa, espera que oprima una tecla \n");
@@ -36,7 +36,7 @@ void generarOperandoIzquierdo(FILE *fpAss, ArrayTercetos *a, int i)
     if(a->array[a->array[i].left].type == 'I') {
         fprintf(fpAss, "\nFILD _%d", a->array[a->array[i].left].intValue);
     } else if (a->array[a->array[i].left].type == 'S') {
-		
+
 		if(getType(a->array[a->array[i].left].stringValue) == 1)
 			fprintf(fpAss, "\nFILD %s", a->array[a->array[i].left].stringValue);
 		else
@@ -59,7 +59,7 @@ void generarOperandoDerecho(FILE *fpAss, ArrayTercetos *a, int i)
 
 void generarCode(FILE *fpAss, ArrayTercetos *a)
 {
-    
+
     FILE *fpTs = fopen("intermedia.txt", "r");
     char linea[200];
 	char aux[100];
@@ -88,10 +88,10 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						fprintf(fpAss, "\nDisplayInteger %s,2", a->array[i].stringValue);
 						fprintf(fpAss, "\nnewLine 1");
 					}
-					else 
+					else
 					{
-						
-						
+
+
 						strcpy(aux,a->array[i].stringValue);
 						char* valueSinComillas = eliminar_comillas(aux);
 						char aux2[100];
@@ -99,13 +99,13 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						fprintf(fpAss, "\nDisplayString %s", valueSinComillas);
 						fprintf(fpAss, "\nnewLine 1");
 					}
-					
+
 				}
 				else if(operador == TOP_READ){
-					
+
 						fprintf(fpAss, "\nGetInteger %s ", a->array[i].stringValue);
 						fprintf(fpAss, "\nnewLine 1");
-					
+
 				}
                 else if(operador == TOP_SUM) {
                     if(a->array[a->array[i].left].isOperand == 1) {
@@ -113,7 +113,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
                     }
 
                     if(a->array[a->array[i].right].isOperand == 1) {
-						if(a->array[a->array[i].right].type == 'F') 
+						if(a->array[a->array[i].right].type == 'F')
 						{
 							generarOperandoDerecho(fpAss, a, i);
 							fprintf(fpAss, "\nFADD");
@@ -131,14 +131,14 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 							}
 						}
                     }
-                    
+
                 }
                 else if(operador == TOP_MUL) {
                     if(a->array[a->array[i].left].isOperand == 1) {
                         generarOperandoIzquierdo(fpAss, a, i);
                     }
                     if(a->array[a->array[i].right].isOperand == 1) {
-						if(a->array[a->array[i].right].type == 'F') 
+						if(a->array[a->array[i].right].type == 'F')
 						{
 							generarOperandoDerecho(fpAss, a, i);
 							fprintf(fpAss, "\nFMUL");
@@ -154,7 +154,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 							}
 						}
                     }
-                    
+
                 }
 
                 else if(operador == TOP_DIV) {
@@ -162,7 +162,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
                         generarOperandoIzquierdo(fpAss, a, i);
                     }
                     if(a->array[a->array[i].right].isOperand == 1) {
-						if(a->array[a->array[i].right].type == 'F') 
+						if(a->array[a->array[i].right].type == 'F')
 						{
 							generarOperandoDerecho(fpAss, a, i);
 							fprintf(fpAss, "\nFDIV");
@@ -178,7 +178,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 							}
 						}
                     }
-                    
+
                 }
 
                 else if (operador == TOP_RES) {
@@ -186,7 +186,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
                         generarOperandoIzquierdo(fpAss, a, i);
                     }
                     if(a->array[a->array[i].right].isOperand == 1) {
-						if(a->array[a->array[i].right].type == 'F') 
+						if(a->array[a->array[i].right].type == 'F')
 						{
 							generarOperandoDerecho(fpAss, a, i);
 							fprintf(fpAss, "\nFSUB");
@@ -202,20 +202,20 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 							}
 						}
                     }
-                    
+
                 }
 
                 else if (operador == TOP_ASIG) {
                     if(a->array[a->array[i].right].isOperand == 1) {
                         generarOperandoDerecho(fpAss, a, i);
                     }
-					if(a->array[a->array[i].left].type == 'F') 
+					if(a->array[a->array[i].left].type == 'F')
 					{
 						fprintf(fpAss, "\nFSTP %s", a->array[a->array[i].left].stringValue);
 					}else{
 						fprintf(fpAss, "\nFISTP %s", a->array[a->array[i].left].stringValue);
 					}
-                    
+
 					fprintf(fpAss, "\nFFREE ST(0)");
                 }
                 /*else if (operador == TOP_MOD) {
@@ -232,7 +232,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
                         generarOperandoIzquierdo(fpAss, a, i);
                     }
                     if(a->array[a->array[i].right].isOperand == 1) {
-						if(a->array[a->array[i].right].type == 'F') 
+						if(a->array[a->array[i].right].type == 'F')
 						{
 							generarOperandoDerecho(fpAss, a, i);
 							fprintf(fpAss, "\nFIDIV");
@@ -253,11 +253,11 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
                     if(a->array[a->array[i].right].isOperand == 1) {
                         generarOperandoDerecho(fpAss, a, i);
                     }
-					
+
 					if(a->array[a->array[i].left].isOperand == 1) {
                         generarOperandoIzquierdo(fpAss, a, i);
                     }
-                
+
                     fprintf(fpAss, "\n FCOMP");
 					fprintf(fpAss, "\n FSTSW AX ");
 					fprintf(fpAss, "\n SAHF ");
@@ -272,7 +272,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
             } else {
             }
         }
-        
+
     }
 };
 
@@ -310,7 +310,7 @@ char *eliminar_comillas(char *cadena) {
                 j++;
             }
         }
-    
+
     cadena_temporal[j] = '\0';
     return cadena_temporal;
 }
@@ -385,7 +385,7 @@ void generarData(FILE *fpAss)
 	//fprintf(fpAss, "\n");
 	//fprintf(fpAss, "\nresult dd ?");
 	//fprintf(fpAss, "\nR dd ?");
-    
+
 	while(!feof(fpTs))
     {
         strcpy(type,"");
@@ -407,7 +407,7 @@ void generarData(FILE *fpAss)
 				char* wordSinComillas = eliminar_comillas(word);
                 char* valueSinComillas = eliminar_comillas(value);
                 char aux1[45] ;
-				
+
 				fprintf(fpAss, "\n%s\tdb\t'%s','$', %s dup (?)\n",normalizarCadenaDeclaracion(wordSinComillas) , valueSinComillas, length);
 			}
 			else if(strcmp(type, "CONST_INT") == 0)
@@ -418,7 +418,7 @@ void generarData(FILE *fpAss)
 			{
 				fprintf(fpAss, "\n%s_ dd %s", word,value);
 			}
-		
+
         }
     }
 };

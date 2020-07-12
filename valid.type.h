@@ -34,7 +34,7 @@ int validType(char *text, int type)
     switch (type)
     {
     case TYPE_ID:
-        insertInTs(text, "", "", "");
+		insertInTs(text, "", "", "");
         return 1;
         break;
     case TYPE_STRING:

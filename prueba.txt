@@ -1,4 +1,5 @@
 PRINT "FRASE A MOSTRAR"
-PRINT "TERCETO A MOSTRAR"
+PRINT "TERCETO A"
 READ variable
 PRINT variable
+CONTAR (variable; [2,3,4,5])

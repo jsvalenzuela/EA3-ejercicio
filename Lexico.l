@@ -30,12 +30,9 @@ CTE 					{DIGITO}
 "CONTAR"                                return CONTAR;
 "INTEGER"                               { yylval.stringValue = strdup(yytext); return TIPO_INTEGER; }
 "STRING"								{ yylval.stringValue = strdup(yytext); return TIPO_STRING; }
-
-
 {CONST_STRING}																			{ validType(yytext, TYPE_STRING); yylval.stringValue = strdup(yytext); return CONST_STRING; }
 {CTE}																	{ validType(yytext, TYPE_INT); yylval.intValue = atoi(yytext); return CTE; }
 
 {ID}                 { validType(yytext, TYPE_ID); yylval.stringValue = strdup(yytext); return ID; }
-
 
 %%
