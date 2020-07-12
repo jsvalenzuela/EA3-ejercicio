@@ -212,10 +212,10 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 					{
 						fprintf(fpAss, "\nFSTP %s", a->array[a->array[i].left].stringValue);
 					}else{
-						fprintf(fpAss, "\nFISTP %s", a->array[a->array[i].left].stringValue);
+						//fprintf(fpAss, "\nFISTP %s", a->array[a->array[i].left].stringValue);
 					}
 
-					fprintf(fpAss, "\nFFREE ST(0)");
+
                 }
                 /*else if (operador == TOP_MOD) {
                     if(a->array[a->array[i].left].isOperand == 1) {

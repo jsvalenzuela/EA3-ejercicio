@@ -359,8 +359,31 @@ io_salida:
         asig:
               ID {
                   modifyTypeTs($1, "INTEGER");
-                }ASIG contar{
+                  Terceto tIdAsignacion;
+                  tIdAsignacion.isOperand = 1;
+                  tIdAsignacion.isOperator = 0;
+                  tIdAsignacion.type = 'I';
+                  tIdAsignacion.stringValue = malloc(strlen($1)+1);
+                  strcpy(tIdAsignacion.stringValue, $1);
+                  AIind = crearTerceto($1, "_", "_", numeracionTercetos);
+                  tIdAsignacion.tercetoID = AIind;
+                  insertarTercetos(&aTercetos, tIdAsignacion);
+                  numeracionTercetos = avanzarTerceto(numeracionTercetos);
 
+                  //reiniciarTipoDato();
+                }ASIG contar{
+                  Terceto tOpAsignacion;
+                  tOpAsignacion.isOperator = 1;
+                  tOpAsignacion.isOperand = 0;
+                  tOpAsignacion.operator = TOP_ASIG;
+                  tOpAsignacion.left = AIind;
+                  tOpAsignacion.right = contarInd;
+
+                  Aind = crearTercetoOperacion(":=", AIind, contarInd, numeracionTercetos);
+                  tOpAsignacion.tercetoID = Aind;
+
+                  insertarTercetos(&aTercetos, tOpAsignacion);
+                  numeracionTercetos = avanzarTerceto(numeracionTercetos);
               };
 /*asignacion:
        ID {
