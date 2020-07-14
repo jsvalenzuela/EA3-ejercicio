@@ -109,6 +109,11 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						fprintf(fpAss, "\nnewLine 1");
 
 				}
+				else if(operador == TOP_CONTAR){
+
+						fprintf(fpAss, "\n\t fild %s ", a->array[i].stringValue);
+
+				}
 				else if(operador == TOP_ASIG)
 				{
 					char *valor = malloc(strlen(a->array[i].stringValue) + 1);
@@ -140,8 +145,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 							fprintf(fpAss,"\n\tinc %s ",valor);
 							fprintf(fpAss,"\n\tjmp final");
 						}
-					}
-					
+					}	
 				}
              
         }
@@ -265,7 +269,7 @@ void generarData(FILE *fpAss)
 		strcpy(value,"");
 		strcpy(length,"");
         //sscanf(linea, "'%s' %s '%s' %s", word, type, value, length);
-		fscanf(fpTs,"%35[^\n]%20[^\n]%45[^\n]%20[^\n]\n", word, type, value, length);
+		fscanf(fpTs,"%60[^\n]%20[^\n]%45[^\n]%20[^\n]\n", word, type, value, length);
 		//fscanf(fpTs,"%[^\n]%[^\n]%[^\n]%[^\n]\n", word, type, value, length);
 		if(esLineaEncabezado == 0) {
             esLineaEncabezado = 1;

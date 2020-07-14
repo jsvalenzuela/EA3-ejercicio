@@ -4,7 +4,7 @@
 
 void initTs(FILE *fp)
 {
-    fprintf(fp, "%-35s %-20s %-45s %-20s", "NAME", "TYPE", "VALUE", "LENGTH");
+    fprintf(fp, "%-60s %-20s %-45s %-20s", "NAME", "TYPE", "VALUE", "LENGTH");
 }
 
 void insertInTs(char *text, char *type, char *value, char *length)
@@ -22,13 +22,13 @@ void saveTs(char *text, char *type, char *value, char *length)
     {
         fp = fopen("ts.txt", APPEND_FILE);
         initTs(fp);
-        fprintf(fp, "\n%-35s %-20s %-45s %-20s", text, type, value, length);
+        fprintf(fp, "\n%-60s %-20s %-45s %-20s", text, type, value, length);
         fclose(fp);
     }
     else
     {
         fp = fopen("ts.txt", APPEND_FILE);
-        fprintf(fp, "\n%-35s %-20s %-45s %-20s", text, type, value, length);
+        fprintf(fp, "\n%-60s %-20s %-45s %-20s", text, type, value, length);
         fclose(fp);
     }
 }
@@ -108,7 +108,7 @@ int modifyTypeTs(char *name, char *type){
 				strncpy(lineaName, &linea[0], 35);
 				lineaName[35] = '\0';
 				if(strcmp(trim(lineaName, NULL), name) == 0) {
-					fprintf(fpTemp, "%-35s %-20s %-45s %-20s", trim(lineaName, NULL), type, "", "");
+					fprintf(fpTemp, "%-60s %-20s %-45s %-20s", trim(lineaName, NULL), type, "", "");
 				} else {
 					fprintf(fpTemp, "%s", linea);
 				}

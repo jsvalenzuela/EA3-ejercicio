@@ -257,8 +257,8 @@ io_salida:
         contar:
                 CONTAR PARA ID PYC CA lista CC PARC
                 {
-                  status("CONTAR");
-                   Terceto tContar;
+           
+                  Terceto tContar;
                   if(getType($3) == 1)
                     tContar.type = 'I';
                   else
@@ -266,13 +266,15 @@ io_salida:
                           yyerror("La variable no fue declarada para el contar");
                           exit(2);
                   }
-                      tContar.isOperand = 0;
+                      
+					  tContar.stringValue = malloc(strlen($3)+1);
+					  strcpy(tContar.stringValue, $3);
+					  tContar.operator = TOP_CONTAR;
+					  tContar.isOperand = 0;
                       tContar.isOperator = 1;
-                      tContar.operator = 12;
-                      status("CONTAR");
                       char nombreTerceto[50];
-
-                      contarInd = crearTerceto("CONTAR", $3, "lista", numeracionTercetos);
+                      
+					  contarInd = crearTerceto("CONTAR", $3, "@cantidadElementos", numeracionTercetos);
                        tContar.tercetoID = contarInd;
 
                        // Inserto en la lista
