@@ -1,5 +1,5 @@
-WRITE "FRASE A MOSTRAR"
-WRITE "TERCETO A"
+WRITE "Ingrese un valor pivot"
 READ variable
-WRITE variable
 valor = CONTAR (variable; [2,3,4,5])
+WRITE "valor es"
+WRITE valor

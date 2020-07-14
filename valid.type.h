@@ -11,7 +11,7 @@
 #include "float.h"
 #include "ts.h"
 
-#define ERR_STRING_LENGTH "Cadena de caracteres mayor a 60"
+#define ERR_STRING_LENGTH "Cadena de caracteres mayor a 35"
 #define ERR_INT_MAX "Entero fuera de rango de los 16 bits (sin signo)"
 #define ERR_FLT_MAX "Float fuera de rango de los 32 bits"
 #define DIGITO_MAX "Digito fuera de rango"
@@ -40,7 +40,7 @@ int validType(char *text, int type)
     case TYPE_STRING:
         /* @TODO mejor forma de quitar comilla de inicio y fin? */
         length = strlen(text) - 2;
-        if (length > 60)
+        if (length > 35)
         {
             printError(ERR_STRING_LENGTH, text);
             exit(0);

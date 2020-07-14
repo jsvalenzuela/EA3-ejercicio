@@ -22,7 +22,7 @@ void generarAssembler(ArrayTercetos *a)
 
     generarCode(fpAss, a);
 	/*generamos el final */
-	fprintf(fpAss, "\n final: \n");
+	
 	fprintf(fpAss, "\n mov ah, 1 ; pausa, espera que oprima una tecla \n");
 	fprintf(fpAss, "int 21h ; AH=1 es el servicio de lectura \n  ");
 	fprintf(fpAss, "MOV AX, 4C00h ; Sale del Dos \n");
@@ -146,6 +146,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 							fprintf(fpAss,"\n\tjmp final");
 						}
 					}	
+					fprintf(fpAss, "\n final: \n");
 				}
              
         }
@@ -269,7 +270,7 @@ void generarData(FILE *fpAss)
 		strcpy(value,"");
 		strcpy(length,"");
         //sscanf(linea, "'%s' %s '%s' %s", word, type, value, length);
-		fscanf(fpTs,"%60[^\n]%20[^\n]%45[^\n]%20[^\n]\n", word, type, value, length);
+		fscanf(fpTs,"%35[^\n]%20[^\n]%45[^\n]%20[^\n]\n", word, type, value, length);
 		//fscanf(fpTs,"%[^\n]%[^\n]%[^\n]%[^\n]\n", word, type, value, length);
 		if(esLineaEncabezado == 0) {
             esLineaEncabezado = 1;
