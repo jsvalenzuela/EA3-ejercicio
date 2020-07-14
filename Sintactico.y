@@ -15,7 +15,6 @@ int yylex();
 int yyparse();
 void yyerror(const char *str);
 void status();
-void controlar_if_anidados(int cant);
 char* getCodOp(char* salto);
 void verificarTipoDato(int tipo);
 void reiniciarTipoDato();
@@ -32,26 +31,12 @@ int yywrap()
         return 1;
 }
 
-pila pilaFactor;
-pila pilaID;
-pila_s pilaIDDeclare;
-pila_s pilaTipoDeclare;
-pila pilaExpresion;
-pila pilaTermino;
-pila pilaRepeat;
 ArrayTercetos aTercetos;
 
 t_cola colaId;
 t_cola listaCola;
 
 
-
-struct ifs {
-	int posicion;
-	int nro_if;
-};
-struct ifs expr_if[1000];
-int expr_if_index = 0;
 
 struct repeat {
 	int posicion;
@@ -74,12 +59,6 @@ int main()
         clean();
         crearTercetos(&aTercetos, 100);
         crearCola(&listaCola);
-        crearPila(&pilaRepeat);
-        crearPila(&pilaFactor);
-        crearPila(&pilaID);
-        crearPila(&pilaExpresion);
-        crearPila(&pilaTermino);
-	crearCola(&colaId);
         yyparse();
         generarAssembler(&aTercetos);
         exit(0);
@@ -340,7 +319,6 @@ io_salida:
                   tOpAsignacion.tercetoID = Aind;
                   insertarTercetos(&aTercetos, tOpAsignacion);
                   numeracionTercetos = avanzarTerceto(numeracionTercetos);
-                 pprintf("asd");
                   while(!colaVacia(&listaCola))
                   {
                       char auxCola[10];
@@ -348,7 +326,6 @@ io_salida:
                       status(auxCola);
                       cantidadElementosLista++;
                   }
-                    pprintf("chauuuauaua");
                   //Agrego los contadores al codigo
               };
 
