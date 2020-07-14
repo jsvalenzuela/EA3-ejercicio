@@ -241,7 +241,7 @@ void generarData(FILE *fpAss)
         } else {
 			if(strstr (type, "INTEGER") )
 			{
-				fprintf(fpAss, "\n%s db 0", word);
+				fprintf(fpAss, "\n%s dd ?", word);
 			}
 			else if (strstr(type, "CONST_STRING") ) {
 				char* wordSinComillas = eliminar_comillas(word);
