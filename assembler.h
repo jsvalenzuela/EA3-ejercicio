@@ -14,3 +14,4 @@ void generarCode(FILE *, ArrayTercetos *);
 void generarData(FILE *);
 char *eliminar_comillas(char *);
 char * normalizarCadenaDeclaracion(char *);
+void generarVariablesContar(FILE *fpAss,ArrayTercetos *a);

@@ -31,7 +31,10 @@ typedef struct Terceto {
     char *stringValue;
     int intValue;
     float floatValue;
-    int isConst; // sin utilizar todavía, podría servir para optimizar? 
+    int isConst;
+     // sin utilizar todavía, podría servir para optimizar? 
+     int  elementos[25];
+    int cantidadElementos;
 } Terceto;
 
 typedef struct ArrayTercetos 
@@ -39,6 +42,8 @@ typedef struct ArrayTercetos
     size_t tamanioUsado;
     size_t tamanioTotal;
     struct Terceto *array;
+    int cantidadTotalElementos;
+    int  totalElementos[100];
 } ArrayTercetos;
 
 void crearTercetos(ArrayTercetos *, size_t);

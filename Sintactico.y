@@ -126,6 +126,9 @@ void pprintff(float str) {
 	int Auxind3=-1;
   int cantidadElementosLista = 0;
   char elementosListaContar[100];
+  int vectorConstantes[100];
+  int cantidadElementosListaAux = 0;
+
 %}
 
 %type <intValue> CTE
@@ -170,6 +173,7 @@ void pprintff(float str) {
 programa_aumentado:
         programa {
                 pprints("COMPILACION EXITOSA");
+                aTercetos.cantidadTotalElementos=cantidadElementosLista;
         };
 
 programa:
@@ -319,13 +323,18 @@ io_salida:
                   tOpAsignacion.tercetoID = Aind;
                   insertarTercetos(&aTercetos, tOpAsignacion);
                   numeracionTercetos = avanzarTerceto(numeracionTercetos);
+
                   while(!colaVacia(&listaCola))
                   {
-                      char auxCola[10];
-                      strcpy(auxCola,sacarDecola(&listaCola));
-                      status(auxCola);
-                      cantidadElementosLista++;
+                    int valor = atoi(sacarDecola(&listaCola));
+                    aTercetos.array[contarInd].elementos[cantidadElementosListaAux] = valor;
+                    aTercetos.totalElementos[cantidadElementosLista] = valor;
+                    cantidadElementosListaAux++;
+                    cantidadElementosLista++;
                   }
+                  aTercetos.array[contarInd].cantidadElementos = cantidadElementosListaAux;
+                  cantidadElementosListaAux = 0;
+
                   //Agrego los contadores al codigo
               };
 

@@ -13,7 +13,7 @@ void generarAssembler(ArrayTercetos *a)
 	fprintf(fpAss, ".STACK 200h \n");
 
 	generarData(fpAss);
-
+	generarVariablesContar(fpAss,a);
     fprintf(fpAss, "\n.CODE \n");
     fprintf(fpAss, "\t MOV AX,@DATA 	;inicializa el segmento de datos\n");
     fprintf(fpAss, "\t MOV DS,AX \n");
@@ -30,6 +30,20 @@ void generarAssembler(ArrayTercetos *a)
 	fprintf(fpAss, "END ; final del archivo. \n");
     fclose(fpAss);
     pprints("Assembler generado...");
+}
+
+
+void generarVariablesContar(FILE *fpAss,ArrayTercetos *a)
+{
+	int tope = (*a).cantidadTotalElementos;
+	int posicion =0;
+	int contador = 1;
+	while( posicion < tope)
+	{
+		 fprintf(fpAss, "\nposicion%d dd  %d",contador ,a->totalElementos[posicion]);
+		 posicion++;
+		 contador++;
+	}
 }
 
 void generarOperandoIzquierdo(FILE *fpAss, ArrayTercetos *a, int i)
@@ -261,4 +275,5 @@ void generarData(FILE *fpAss)
 
         }
     }
+	
 };
