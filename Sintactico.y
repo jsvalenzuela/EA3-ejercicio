@@ -302,7 +302,8 @@ io_salida:
                   Terceto tIdAsignacion;
                   tIdAsignacion.isOperand = 1;
                   tIdAsignacion.isOperator = 0;
-                  tIdAsignacion.type = 'I';
+                  tIdAsignacion.operator = TOP_ID;
+				  tIdAsignacion.type = 'I';
                   tIdAsignacion.stringValue = malloc(strlen($1)+1);
                   strcpy(tIdAsignacion.stringValue, $1);
                   AIind = crearTerceto($1, "_", "_", numeracionTercetos);
@@ -327,12 +328,12 @@ io_salida:
                   while(!colaVacia(&listaCola))
                   {
                     int valor = atoi(sacarDecola(&listaCola));
-                    aTercetos.array[contarInd].elementos[cantidadElementosListaAux] = valor;
+                    aTercetos.array[tOpAsignacion.tercetoID].elementos[cantidadElementosListaAux] = valor;
                     aTercetos.totalElementos[cantidadElementosLista] = valor;
                     cantidadElementosListaAux++;
                     cantidadElementosLista++;
                   }
-                  aTercetos.array[contarInd].cantidadElementos = cantidadElementosListaAux;
+                  aTercetos.array[tOpAsignacion.tercetoID].cantidadElementos = cantidadElementosListaAux;
                   cantidadElementosListaAux = 0;
 
                   //Agrego los contadores al codigo
