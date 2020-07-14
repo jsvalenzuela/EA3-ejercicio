@@ -37,7 +37,7 @@ int ponerEncola(t_cola *p, char* dato){
     n_nodo *nue = (n_nodo*)malloc(sizeof(n_nodo));
 	if(nue == NULL)
 		return 0;
-	nue->info = strdup(dato);
+	nue->info = (char * )strdup(dato);
 	nue->sig = NULL;
 	if(p->pri == NULL)
 	{
@@ -58,7 +58,7 @@ char* sacarDecola(t_cola *p){
 	if(p->pri == NULL)
 		return 0;
 	aux =p->pri;
-	info = strdup(aux->info);
+	info =  (char *)strdup(aux->info);
 	if(p->pri == p->ult)
 	{
 		p->pri=NULL;

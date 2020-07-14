@@ -75,7 +75,7 @@ int ponerEnPilaS(pila_s *p, char * dato){
     t_nodo_s *nue = (t_nodo_s*)malloc(sizeof(t_nodo_s));
 	if(nue == NULL)
 		return 0;
-	nue->info = strdup(dato);
+	nue->info = (char *) strdup(dato);
 	nue->sig = *p;
 	*p = nue;
     return 1;
@@ -100,7 +100,7 @@ char* sacarDePilaS(pila_s *p){
 	if(*p == NULL)
 		return 0;
 	aux = *p;
-	info = strdup(aux->info);
+	info = (char *)strdup(aux->info);
 	*p = aux ->sig;
 	free(aux);
 	return info;
