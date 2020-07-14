@@ -78,20 +78,12 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
     FILE *fpTs = fopen("intermedia.txt", "r");
     char linea[200];
 	char aux[100];
+	int x;
     ArrayTercetos arrayTercetos;
     crearTercetos(&arrayTercetos, 100);
 
         if((int)a->tamanioUsado > 0) {
         for(int i=0; i < (int)a->tamanioUsado; i++) {
-
-            if(a->array[i].isOperand == 1) {
-                if(a->array[i].type == 'S') {
-                } else if (a->array[i].type == 'F') {
-                } else if (a->array[i].type == 'I') {
-                }
-            }
-            else if(a->array[i].isOperator == 1) {
-
                 char operador = a->array[i].operator;
 				if(operador == TOP_PRINT){
 					if (a->array[i].type == 'I'){
@@ -112,21 +104,46 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 				}
 				else if(operador == TOP_READ){
 
+						
 						fprintf(fpAss, "\nGetInteger %s ", a->array[i].stringValue);
 						fprintf(fpAss, "\nnewLine 1");
 
 				}
-
-                else if (operador == TOP_ASIG) {
-                    if(a->array[a->array[i].right].isOperand == 1) {
-                        generarOperandoDerecho(fpAss, a, i);
-                    }
-					if(a->array[a->array[i].left].type == 'F')
+				else if(operador == TOP_ASIG)
+				{
+					char *valor = malloc(strlen(a->array[i].stringValue) + 1);
+					strcpy(valor,a->array[i].stringValue);
+					char valorAux[100];
+					for(x=0; x< a->array[i].cantidadElementos; x++)
 					{
-						fprintf(fpAss, "\nFSTP %s", a->array[a->array[i].left].stringValue);
+						
+						int siguienteElemento = x + 2;
+						if(siguienteElemento > a->array[i].cantidadElementos)
+							siguienteElemento = -1;
+						
+						fprintf(fpAss, "\n\tparte%d:", x+1);
+						fprintf(fpAss, "\n\t fild posicion%d", x+1);
+						fprintf(fpAss, "\n\t fxch");
+						fprintf(fpAss, "\n\t fcom");
+						fprintf(fpAss,"\n\t fstsw ax");
+						fprintf(fpAss,"\n\tsahf");
+						fprintf(fpAss,"\n\tffree st(0)");
+						if(siguienteElemento != -1)
+						{
+							fprintf(fpAss,"\n\tjne parte%d",siguienteElemento);
+							fprintf(fpAss,"\n\tinc %s ",valor);
+							fprintf(fpAss,"\n\tjmp parte%d",siguienteElemento);
+						}
+						else
+						{
+							fprintf(fpAss,"\n\tjne final");
+							fprintf(fpAss,"\n\tinc %s ",valor);
+							fprintf(fpAss,"\n\tjmp final");
+						}
 					}
-                }
-            } 
+					
+				}
+             
         }
     }
 };
