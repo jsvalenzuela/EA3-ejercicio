@@ -14,6 +14,8 @@
 #define TOP_ETIQUETA 9
 #define TOP_READ 10
 #define TOP_PRINT 11
+#define TOP_CONTAR 20
+#define TOP_ID 21
 
 typedef struct Terceto {
     int tercetoID;
