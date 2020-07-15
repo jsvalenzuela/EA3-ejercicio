@@ -94,6 +94,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						char* valueSinComillas = eliminar_comillas(aux);
 						char aux2[100];
 						strcpy(aux2,normalizarCadenaDeclaracion(valueSinComillas));
+						
 						fprintf(fpAss, "\nDisplayString %s", valueSinComillas);
 						fprintf(fpAss, "\nnewLine 1");
 					}
@@ -186,8 +187,9 @@ char *eliminar_comillas(char *cadena) {
 
 char *normalizarCadenaDeclaracion(char *cadena)
 {
-    char *recorrerCad = cadena, *aux = recorrerCad;
+	char *recorrerCad = cadena, *aux = recorrerCad;
     int blancoEncontrado = 0, contCaracteres = 0, blancoInicial = 0, primerChar = 0;
+    int marca = 0;
     while(*recorrerCad)
     {
         if(esBlanco(*recorrerCad))
@@ -215,15 +217,12 @@ char *normalizarCadenaDeclaracion(char *cadena)
             {
                 primerChar = 0;
                 if(esLetra(*recorrerCad))
-                    *recorrerCad = aMayuscula(*recorrerCad);
-            }
-            else
-            {
-                if(esLetra(*recorrerCad))  //verifico si es letra minuscula
-                    *recorrerCad = aMinuscula(*recorrerCad);
-            }
-            *aux = *recorrerCad;
-             aux++;
+                {
+					*recorrerCad = aMayuscula(*recorrerCad);
+					*aux = *recorrerCad;
+					aux++ ;
+				}
+			}
         }
         contCaracteres++;
         recorrerCad++; //RECORRO SIEMPRE MI CADENA
@@ -274,6 +273,7 @@ void generarData(FILE *fpAss)
 				fprintf(fpAss, "\n%s dd ?", word);
 			}
 			else if (strstr(type, "CONST_STRING") ) {
+				
 				char* wordSinComillas = eliminar_comillas(word);
                 char* valueSinComillas = eliminar_comillas(value);
                 char aux1[45] ;
