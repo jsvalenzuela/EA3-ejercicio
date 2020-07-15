@@ -1,6 +1,4 @@
-
 #include "assembler.h"
-
 void generarAssembler(ArrayTercetos *a)
 {
     pprints("Generando Assembler...");
@@ -92,7 +90,6 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 					}
 					else
 					{
-
 						strcpy(aux,a->array[i].stringValue);
 						char* valueSinComillas = eliminar_comillas(aux);
 						char aux2[100];
@@ -100,19 +97,13 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						fprintf(fpAss, "\nDisplayString %s", valueSinComillas);
 						fprintf(fpAss, "\nnewLine 1");
 					}
-
 				}
 				else if(operador == TOP_READ){
-
-						
 						fprintf(fpAss, "\nGetInteger %s ", a->array[i].stringValue);
 						fprintf(fpAss, "\nnewLine 1");
-
 				}
 				else if(operador == TOP_CONTAR){
-
 						fprintf(fpAss, "\n\t fild %s ", a->array[i].stringValue);
-
 				}
 				else if(operador == TOP_ASIG)
 				{
@@ -147,8 +138,7 @@ void generarCode(FILE *fpAss, ArrayTercetos *a)
 						}
 					}	
 					fprintf(fpAss, "\n final: \n");
-				}
-             
+				}  
         }
     }
 };
@@ -271,6 +261,10 @@ void generarData(FILE *fpAss)
 		strcpy(length,"");
         //sscanf(linea, "'%s' %s '%s' %s", word, type, value, length);
 		fscanf(fpTs,"%35[^\n]%20[^\n]%45[^\n]%20[^\n]\n", word, type, value, length);
+		trim(word,NULL);
+		trim(type,NULL);
+		trim(value,NULL);
+		trim(length,NULL);
 		//fscanf(fpTs,"%[^\n]%[^\n]%[^\n]%[^\n]\n", word, type, value, length);
 		if(esLineaEncabezado == 0) {
             esLineaEncabezado = 1;
