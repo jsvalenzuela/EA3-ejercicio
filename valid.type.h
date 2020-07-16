@@ -31,6 +31,7 @@ int validType(char *text, int type)
 {
     int length;
     char stringLength[20];
+	int numero;
     switch (type)
     {
     case TYPE_ID:
@@ -57,19 +58,16 @@ int validType(char *text, int type)
         }
         break;
     case TYPE_INT:
-        if (atoi(text) > 9)
+        numero = atoi(text);
+		if ((numero) > 9)
         {
             printError(DIGITO_MAX, text);
-            exit(0);
+            exit(1);
         }
         else
         {
-			/*char str1[16];
-		    char str2[16];
-		    strcpy(str1, "_");
-		    strcpy(str2, text);
-		    strcat(str1, str2);
-            insertInTs(str1, "CONST_INT", text, "");*/
+			printError("CTE MENOR A 0 EN LA FUNCION CONTAR", "");
+            exit(1);
         }
         break;
     case TYPE_FLOAT:
