@@ -60,7 +60,6 @@ int main()
         crearTercetos(&aTercetos, 100);
         crearCola(&listaCola);
         yyparse();
-        generarAssembler(&aTercetos);
         exit(0);
 }
 
@@ -174,6 +173,7 @@ void pprintff(float str) {
 programa_aumentado:
         programa {
                 pprints("COMPILACION EXITOSA");
+                  generarAssembler(&aTercetos);
                 aTercetos.cantidadTotalElementos=cantidadElementosLista;
         };
 
