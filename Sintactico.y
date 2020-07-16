@@ -132,7 +132,8 @@ void pprintff(float str) {
 %}
 
 %type <intValue> CTE
-%type <stringValue> ID CONST_STRING TIPO_INTEGER TIPO_STRING
+%type <stringValue> CONST_STRING
+%token <stringValue> ID
 
 // Sector declaraciones
 %token VAR ENDVAR TIPO_INTEGER TIPO_STRING
@@ -155,7 +156,7 @@ void pprintff(float str) {
 //%token MOD DIV
 
 // Asignacion
-%token ID ASIG
+%token ASIG
 
 // Constantes
 %token CONST_STRING CTE CONST_FLOAT
@@ -195,6 +196,7 @@ io_lectura:
                 //ponerEnPilaS(&pilaIDDeclare, $2);
                 //char *id = sacarDePilaS(&pilaIDDeclare);
                 //char *type = sacarDePilaS(&pilaTipoDeclare);
+
                 modifyTypeTs($2, "INTEGER");
 
                 tRead.isOperand = 0;
@@ -257,7 +259,7 @@ io_salida:
         contar:
                 CONTAR PARA ID PYC CA lista CC PARC
                 {
-           
+
                   Terceto tContar;
                   if(getType($3) == 1)
                     tContar.type = 'I';
@@ -266,14 +268,14 @@ io_salida:
                           yyerror("La variable no fue declarada para el contar");
                           exit(2);
                   }
-                      
+
 					  tContar.stringValue = malloc(strlen($3)+1);
 					  strcpy(tContar.stringValue, $3);
 					  tContar.operator = TOP_CONTAR;
 					  tContar.isOperand = 0;
                       tContar.isOperator = 1;
                       char nombreTerceto[50];
-                      
+
 					  contarInd = crearTerceto("CONTAR", $3, "@cantidadElementos", numeracionTercetos);
                        tContar.tercetoID = contarInd;
 
