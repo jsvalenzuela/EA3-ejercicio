@@ -34,12 +34,12 @@ void saveTs(char *text, char *type, char *value, char *length)
 }
 
 int searchTs(char *text){
-	
+
 	char linea[1000],word[100];
-	
+
 	FILE *fp = fopen("ts.txt", READ_FILE);
-    if(fp!= NULL) 
-	{	
+    if(fp!= NULL)
+	{
 		while(fgets(linea,sizeof(linea),fp))
 		{
 			sscanf(linea, "%s", word);
@@ -53,31 +53,51 @@ int searchTs(char *text){
 	return 0;
 }
 
-int getType(char *text){
-	
-	char linea[1000],word[100], type[100],value[100],length[100];
-	
+int buscarConstanteEnTabla(char *text)
+{
+	char linea[1000],word[80];
 	FILE *fp = fopen("ts.txt", READ_FILE);
-    if(fp!= NULL) 
-	{	
-		
+    if(fp!= NULL)
+	{
+		while(fgets(linea,sizeof(linea),fp))
+		{
+			sscanf(linea, "%60[^\n]", word);
+			trim(word,NULL);
+			if(strcmp(word,text) == 0){
+				fclose(fp);
+				return 1;
+			}
+		}
+	}
+	fclose(fp);
+	return 0;
+}
+
+int getType(char *text){
+
+	char linea[1000],word[100], type[100],value[100],length[100];
+
+	FILE *fp = fopen("ts.txt", READ_FILE);
+    if(fp!= NULL)
+	{
+
 		while(fgets(linea,sizeof(linea),fp))
 		{
 			strcpy(type,"");
 			strcpy(word,"");
 			sscanf(linea, "%s %s", word, type);
-			
+
 			if(strcmp(word,text)==0){
-				
-				if(strcmp(type,TYPE_INTEGER_TS)==0 || strcmp(type,TYPE_CONST_INT_TS)==0){ 
+
+				if(strcmp(type,TYPE_INTEGER_TS)==0 || strcmp(type,TYPE_CONST_INT_TS)==0){
 
 					return 1;
 				}
-				if(strcmp(type,TYPE_FLOAT_TS)==0 || strcmp(type,TYPE_CONST_FLOAT_TS)==0){ 
+				if(strcmp(type,TYPE_FLOAT_TS)==0 || strcmp(type,TYPE_CONST_FLOAT_TS)==0){
 
 					return 2;
 				}
-				if(strcmp(type,TYPE_STRING_TS)==0 || strcmp(type,TYPE_CONST_STRING_TS)==0){ 
+				if(strcmp(type,TYPE_STRING_TS)==0 || strcmp(type,TYPE_CONST_STRING_TS)==0){
 
 					return 3;
 				}
@@ -91,38 +111,39 @@ int getType(char *text){
 
 
 int modifyTypeTs(char *name, char *type){
-	
-	char linea[124], lineaName[36];
+
+	char linea[200], lineaName[36];
 	int esLineaEncabezado = 0;
 
 	FILE *fp = fopen("ts.txt", READ_FILE);
 	FILE *fpTemp = fopen("temp_ts.txt", APPEND_FILE);
-    if(fp!= NULL) 
-	{	
-		while(fgets(linea,124,fp))
+    if(fp!= NULL)
+	{
+		while(fgets(linea,200,fp))
 		{
 			if(esLineaEncabezado == 0) {
 				esLineaEncabezado = 1;
 				fprintf(fpTemp, "%s", linea);
 			} else {
-				strncpy(lineaName, &linea[0], 35);
+				/*strncpy(lineaName, &linea[0], 35);
 				lineaName[35] = '\0';
 				if(strcmp(trim(lineaName, NULL), name) == 0) {
 					fprintf(fpTemp, "%-60s %-20s %-60s %-20s", trim(lineaName, NULL), type, "", "");
 				} else {
-					fprintf(fpTemp, "%s", linea);
-				}
-			}
 
+				}*/
+        fprintf(fpTemp, "%s", linea);
+			}
 		}
+        fprintf(fpTemp, "\n%-60s %-20s %-60s %-20s", trim(name, NULL), type, "", "");
 	}
 
 
 	fclose(fp);
 	fclose(fpTemp);
-	
-	char lineaAux[125];
-	
+
+	char lineaAux[200];
+
 	FILE *fpDestino = fopen("ts.txt", "w+");
 	FILE *fpOrigen = fopen("temp_ts.txt", "r+");
 

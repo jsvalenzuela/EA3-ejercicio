@@ -1,5 +1,7 @@
 WRITE "Ingrese un valor pivot del cero al nueve: "
+WRITE "Ingresrere: "
 READ variable
+WRITE "Ingresrere: "
 valor = CONTAR (variable; [0,2,3,4,4,6,8,9])
 WRITE "La cantidad es:"
 WRITE valor

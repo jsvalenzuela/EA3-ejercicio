@@ -16,3 +16,4 @@ void saveTs(char *, char *, char *, char *);
 void insertInTs(char *text, char *type, char *value, char *length);
 int modifyTypeTs(char *, char *);
 int getType(char *text);
+int buscarConstanteEnTabla(char *text);

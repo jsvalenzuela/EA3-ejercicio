@@ -48,8 +48,11 @@ int validType(char *text, int type)
         else
         {
             // converts length into string
-            sprintf(stringLength, "%d", length);
-            insertInTs(text, "CONST_STRING", text, stringLength);
+            if(!buscarConstanteEnTabla(text))
+			{
+				sprintf(stringLength, "%d", length);
+				insertInTs(text, "CONST_STRING", text, stringLength);
+			}
             return 1;
         }
         break;
