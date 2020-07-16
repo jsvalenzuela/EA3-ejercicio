@@ -173,7 +173,7 @@ void pprintff(float str) {
 programa_aumentado:
         programa {
                 pprints("COMPILACION EXITOSA");
-                  generarAssembler(&aTercetos);
+                generarAssembler(&aTercetos);
                 aTercetos.cantidadTotalElementos=cantidadElementosLista;
         };
 
@@ -192,10 +192,6 @@ sentencia:
 io_lectura:
         READ ID {
 				Terceto tRead;
-                //uso la pila para declarar el id
-                //ponerEnPilaS(&pilaIDDeclare, $2);
-                //char *id = sacarDePilaS(&pilaIDDeclare);
-                //char *type = sacarDePilaS(&pilaTipoDeclare);
 
                 modifyTypeTs($2, "INTEGER");
 
@@ -215,8 +211,7 @@ io_lectura:
 
 io_salida:
         WRITE CONST_STRING {
-                //crearTerceto("PRINT", $2, "_", numeracionTercetos);
-                //numeracionTercetos = avanzarTerceto(numeracionTercetos);
+
 
 				            Terceto tPrint;
                 tPrint.isOperand = 0;
@@ -233,8 +228,6 @@ io_salida:
 				numeracionTercetos = avanzarTerceto(numeracionTercetos);
 
         } | WRITE ID {
-                //crearTerceto("PRINT", $2, "_", numeracionTercetos);
-                //numeracionTercetos = avanzarTerceto(numeracionTercetos);
         				Terceto tPrint;
                         tPrint.isOperand = 0;
                         tPrint.isOperator = 1;
