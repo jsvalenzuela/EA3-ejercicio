@@ -1,5 +1,5 @@
-WRITE "Ingrese un valor pivot"
+WRITE "Ingrese un valor pivot del cero al nueve: "
 READ variable
-valor = CONTAR (variable; [2,3,4,5])
-WRITE "valor es"
+valor = CONTAR (variable; [3,8,6,2,4,4,9,0])
+WRITE "La cantidad es:"
 WRITE valor

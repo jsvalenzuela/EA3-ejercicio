@@ -40,7 +40,7 @@ int validType(char *text, int type)
     case TYPE_STRING:
         /* @TODO mejor forma de quitar comilla de inicio y fin? */
         length = strlen(text) - 2;
-        if (length > 35)
+        if (length > 60)
         {
             printError(ERR_STRING_LENGTH, text);
             exit(0);

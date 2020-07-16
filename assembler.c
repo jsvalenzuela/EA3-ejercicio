@@ -259,7 +259,7 @@ void generarData(FILE *fpAss)
 		strcpy(value,"");
 		strcpy(length,"");
         //sscanf(linea, "'%s' %s '%s' %s", word, type, value, length);
-		fscanf(fpTs,"%35[^\n]%20[^\n]%45[^\n]%20[^\n]\n", word, type, value, length);
+		fscanf(fpTs,"%60[^\n]%20[^\n]%60[^\n]%20[^\n]\n", word, type, value, length);
 		trim(word,NULL);
 		trim(type,NULL);
 		trim(value,NULL);
