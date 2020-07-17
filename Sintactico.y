@@ -170,6 +170,8 @@ io_salida:
                   int idTercetoUno = crear_terceto("1","_","_");
                   char cadIdTercetoUno[3];
                   itoa(idTercetoUno,cadIdTercetoUno,10);
+                  if(!buscarConstanteEnTabla("incremento_const"))
+                    insertInTs("incremento_const", "CONST_INTE", "1", "");
                   int idTercetoIncremento = crear_terceto("+",cadIdTercetoContar,cadIdTercetoUno);
                   while(!colaVacia(&listaCola))
                   {
