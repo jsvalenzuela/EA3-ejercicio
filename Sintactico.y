@@ -173,8 +173,8 @@ void pprintff(float str) {
 programa_aumentado:
         programa {
                 pprints("COMPILACION EXITOSA");
-                generarAssembler(&aTercetos);
-                aTercetos.cantidadTotalElementos=cantidadElementosLista;
+                //generarAssembler(&aTercetos);
+                //aTercetos.cantidadTotalElementos=cantidadElementosLista;
         };
 
 programa:
@@ -195,88 +195,30 @@ io_lectura:
 
                 modifyTypeTs($2, "INTEGER");
 
-                tRead.isOperand = 0;
-                tRead.isOperator = 1;
-				        tRead.operator = TOP_READ;
-                tRead.type = 'S';
-                tRead.stringValue = malloc(strlen($2)+1);
-                strcpy(tRead.stringValue, $2);
 
-                PInd = crearTerceto("READ", $2, "_", numeracionTercetos);
-                tRead.tercetoID = PInd;
-
-                insertarTercetos(&aTercetos, tRead);
-				        numeracionTercetos = avanzarTerceto(numeracionTercetos);
         };
 
 io_salida:
         WRITE CONST_STRING {
 
-
-				            Terceto tPrint;
-                tPrint.isOperand = 0;
-                tPrint.isOperator = 1;
-				            tPrint.operator = TOP_PRINT;
-                tPrint.type = 'S';
-                tPrint.stringValue = malloc(strlen($2)+1);
-                strcpy(tPrint.stringValue, $2);
-
-                PInd = crearTerceto("WRITE", $2, "_", numeracionTercetos);;
-                tPrint.tercetoID = PInd;
-
-                insertarTercetos(&aTercetos, tPrint);
-				numeracionTercetos = avanzarTerceto(numeracionTercetos);
-
         } | WRITE ID {
-        				Terceto tPrint;
-                        tPrint.isOperand = 0;
-                        tPrint.isOperator = 1;
-        				tPrint.operator = TOP_PRINT;
-        				if(getType($2) == 1)
-        					tPrint.type = 'I';
-                else
+        				if(getType($2) != 1)
                 {
                         yyerror("La variable no fue declarada");
                         exit(2);
                 }
-                tPrint.stringValue = malloc(strlen($2)+1);
-                strcpy(tPrint.stringValue, $2);
-
-                PInd = crearTerceto("WRITE", $2, "_", numeracionTercetos);;
-                tPrint.tercetoID = PInd;
-
-                insertarTercetos(&aTercetos, tPrint);
-				        numeracionTercetos = avanzarTerceto(numeracionTercetos);
         };
 
         contar:
                 CONTAR PARA ID PYC CA lista CC PARC
                 {
 
-                  Terceto tContar;
-                  if(getType($3) == 1)
-                    tContar.type = 'I';
-                  else
+                  if(getType($3) != 1)
                   {
                           yyerror("La variable no fue declarada para el contar");
                           exit(2);
                   }
 
-					  tContar.stringValue = malloc(strlen($3)+1);
-					  strcpy(tContar.stringValue, $3);
-					  tContar.operator = TOP_CONTAR;
-					  tContar.isOperand = 0;
-                      tContar.isOperator = 1;
-                      char nombreTerceto[50];
-
-					  contarInd = crearTerceto("CONTAR", $3, "@cantidadElementos", numeracionTercetos);
-                       tContar.tercetoID = contarInd;
-
-                       // Inserto en la lista
-                       insertarTercetos(&aTercetos, tContar);
-
-                       // Pido la nueva numeracion
-                       numeracionTercetos = avanzarTerceto(numeracionTercetos);
 
 
                 };
@@ -296,42 +238,16 @@ io_salida:
         asig:
               ID {
                   modifyTypeTs($1, "INTEGER");
-                  Terceto tIdAsignacion;
-                  tIdAsignacion.isOperand = 1;
-                  tIdAsignacion.isOperator = 0;
-                  tIdAsignacion.operator = TOP_ID;
-				  tIdAsignacion.type = 'I';
-                  tIdAsignacion.stringValue = malloc(strlen($1)+1);
-                  strcpy(tIdAsignacion.stringValue, $1);
-                  AIind = crearTerceto($1, "_", "_", numeracionTercetos);
-                  tIdAsignacion.tercetoID = AIind;
-                  insertarTercetos(&aTercetos, tIdAsignacion);
-                  numeracionTercetos = avanzarTerceto(numeracionTercetos);
 
                   //reiniciarTipoDato();
                 }ASIG contar{
-                  pprintf("adentro");
-                  Terceto tOpAsignacion;
-                  tOpAsignacion.isOperator = 1;
-                  tOpAsignacion.isOperand = 0;
-                  tOpAsignacion.operator = TOP_ASIG;
-                  tOpAsignacion.left = AIind;
-                  tOpAsignacion.right = contarInd;
-                  Aind = crearTercetoOperacion(":=", AIind, contarInd, numeracionTercetos);
-                  tOpAsignacion.tercetoID = Aind;
-                  insertarTercetos(&aTercetos, tOpAsignacion);
-                  numeracionTercetos = avanzarTerceto(numeracionTercetos);
+
 
                   while(!colaVacia(&listaCola))
                   {
                     int valor = atoi(sacarDecola(&listaCola));
-                    aTercetos.array[tOpAsignacion.tercetoID].elementos[cantidadElementosListaAux] = valor;
-                    aTercetos.totalElementos[cantidadElementosLista] = valor;
-                    cantidadElementosListaAux++;
-                    cantidadElementosLista++;
                   }
-                  aTercetos.array[tOpAsignacion.tercetoID].cantidadElementos = cantidadElementosListaAux;
-                  cantidadElementosListaAux = 0;
+
 
                   //Agrego los contadores al codigo
               };
