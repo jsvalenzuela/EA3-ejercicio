@@ -37,22 +37,9 @@ t_cola colaId;
 t_cola listaCola;
 
 
-
-
-struct s_variables {
-	int type;
-};
-struct s_variables variables[1000];
-
-struct s_asignaciones {
-	int type;
-};
-struct s_asignaciones asig[1000];
-
 int main()
 {
         clean();
-        crearTercetos(&aTercetos, 100);
         crearCola(&listaCola);
         yyparse();
         exit(0);
