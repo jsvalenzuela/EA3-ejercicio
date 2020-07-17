@@ -27,7 +27,10 @@ int yywrap()
 
 t_cola colaId;
 t_cola listaCola;
-
+int idTercetoAsignacion = -1;
+int idTercetoPivot = -1;
+int idTercetoContar =-1;
+char nombrePivotAsignacion[60];
 
 int main()
 {
@@ -129,7 +132,7 @@ io_salida:
                           yyerror("La variable no fue declarada para el contar");
                           exit(2);
                   }
-
+                  strcpy(nombrePivotAsignacion,$3);
                 };
 
         lista:
@@ -145,15 +148,17 @@ io_salida:
               } ;
 
         asig:
-              ID {
+              ID ASIG contar{
+                //Agrego el id a la tabla simbolos
                   modifyTypeTs($1, "INTEGER");
-
-                  //reiniciarTipoDato();
-                }ASIG contar{
-
+                  int idTercetoAsignacion = crear_terceto($1,"_","_");
+                  int idTercetoPivot = crear_terceto(nombrePivotAsignacion,"_","_");
+                  int idTercetoContar = crear_terceto("@resContar","_","_");
                   while(!colaVacia(&listaCola))
                   {
-                    int valor = atoi(sacarDecola(&listaCola));
+                    char valorAux[1];
+                    strcpy(valorAux,sacarDecola(&listaCola));
+                    int valorTerceto = crear_terceto(valorAux,"_","_");
                   }
 
                   //Agrego los contadores al codigo
