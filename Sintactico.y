@@ -38,11 +38,6 @@ t_cola listaCola;
 
 
 
-struct repeat {
-	int posicion;
-};
-struct repeat expr_repeat[1000];
-int expr_repeat_index = 0;
 
 struct s_variables {
 	int type;
@@ -114,7 +109,6 @@ void pprintff(float str) {
 	int Find1 = -1;
 	int cant_if=0;
 	int i=0;
-	int repeat=0;
 	int tipoDatoActual = -1;
 	int cant_var = -1;
 	int cant_asig=-1;
@@ -137,31 +131,14 @@ void pprintff(float str) {
 // Sector declaraciones
 %token VAR ENDVAR TIPO_INTEGER TIPO_STRING
 
-// Condiciones
-//%token IF THEN ELSE ENDIF
-
-// Operadores de Comparación
-//%token OP_MENOR OP_MENOR_IGUAL OP_MAYOR OP_MAYOR_IGUAL
-//%token OP_IGUAL OP_DISTINTO
-//%token AND NOT OR
-
-// Ciclos
-//%token REPEAT UNTIL
-
 // I/O
 %token WRITE READ
-
-// MOD / DIV
-//%token MOD DIV
 
 // Asignacion
 %token ASIG
 
 // Constantes
-%token CONST_STRING CTE CONST_FLOAT
-
-// Operadores
-//%token OP_MULTIPLICACION OP_SUMA OP_RESTA OP_DIVISION
+%token CONST_STRING CTE
 
 // Parentesis, corchetes, otros caracteres
 %token PARA PARC CA CC COMA PYC
