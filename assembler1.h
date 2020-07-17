@@ -18,6 +18,7 @@ char *eliminar_comillas(char *cadena);
 char *normalizarCadenaDeclaracion(char *cadena);
 char *normalizaCadenaArchivo(char *cad);
 void generarData(FILE *fpAss);
+void escribir_seccion_codigo(FILE *);
 
 void escribir_assembler()
 {
@@ -38,7 +39,7 @@ void escribir_assembler()
     fprintf(archivo, "\n.CODE\n\nSTART:\n\nMOV AX,@DATA\nMOV DS, AX\nFINIT\n\n");
 
     // escribo seccion de codigo, usando los tercetos
-   // escribir_seccion_codigo(archivo);
+	escribir_seccion_codigo(archivo);
 
     // escribo trailer (fijo)
     fprintf(archivo, "\nMOV AH, 1\nINT 21h\nMOV AX, 4C00h\nINT 21h\n\nEND START\n");
@@ -120,6 +121,30 @@ char *normalizaCadenaArchivo(char *cad)
         *aux = '\0';
     return cad;
 }
+
+
+void escribir_seccion_codigo(FILE *fpAss)
+{
+	int i;
+    int indice_terceto = obtenerIndiceTercetos();
+	char aux[100];
+	for(i=0;i <= indice_terceto;i++)
+	{	
+		if(strcmp(vector_tercetos[i].ope,"WRITE")==0)
+		{
+			if(strchr(vector_tercetos[i-1].ope,'"') != NULL)
+			{
+				strcpy(aux,vector_tercetos[i-1].ope);
+				char* valueSinComillas = eliminar_comillas(aux);
+				char aux2[100];
+				strcpy(aux2,normalizarCadenaDeclaracion(valueSinComillas));				
+				fprintf(fpAss, "\nDisplayString %s", valueSinComillas);
+				fprintf(fpAss, "\nnewLine 1");
+			}
+		}
+	}
+}
+
 
 void generarData(FILE *fpAss)
 {
