@@ -17,7 +17,7 @@ static int cant_tercetos = 0;
 /* estrutura de un terceto */
 	typedef struct terceto {
 		int nroTerceto;
-		char ope[35];
+		char ope[61];
 		char te1[30];
 		char te2[30];
 		char resultado_aux[10];
