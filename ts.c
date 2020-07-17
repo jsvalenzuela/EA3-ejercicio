@@ -63,7 +63,7 @@ int buscarConstanteEnTabla(char *text)
 		{
 			sscanf(linea, "%60[^\n]", word);
 			trim(word,NULL);
-			if(strcmp(word,text) == 0){
+			if(strcmp(word,text) == 0 ){
 				fclose(fp);
 				return 1;
 			}
