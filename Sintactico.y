@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "tercetos1.h"
+
 #include "pila-dinamica.h"
 #include "ts.h"
 #include "cola-dinamica.h"
-
+#include "assembler1.h"
 int yylex();
 int yyparse();
 void yyerror(const char *str);
@@ -91,7 +91,10 @@ programa_aumentado:
         programa {
                 pprints("COMPILACION EXITOSA");
                 escribir_tercetos();
-                //generarAssembler(&aTercetos);
+				escribir_assembler();   
+
+				
+				//generarAssembler(&aTercetos);
                 //aTercetos.cantidadTotalElementos=cantidadElementosLista;
         };
 
