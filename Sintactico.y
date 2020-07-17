@@ -91,9 +91,9 @@ programa_aumentado:
         programa {
                 pprints("COMPILACION EXITOSA");
                 escribir_tercetos();
-				escribir_assembler();   
+				escribir_assembler();
 
-				
+
 				//generarAssembler(&aTercetos);
                 //aTercetos.cantidadTotalElementos=cantidadElementosLista;
         };
@@ -120,7 +120,7 @@ io_lectura:
 io_salida:
         WRITE CONST_STRING {
           crear_terceto($2,"_","_");
-          crear_terceto("PRINT","_","_");
+          crear_terceto("WRITE","_","_");
         } | WRITE ID {
         				if(getType($2) != 1)
                 {
@@ -128,7 +128,7 @@ io_salida:
                         exit(2);
                 }
                 crear_terceto($2,"_","_");
-                crear_terceto("PRINT","_","_");
+                crear_terceto("WRITE","_","_");
         };
 
         contar:
