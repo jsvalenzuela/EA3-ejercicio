@@ -159,7 +159,18 @@ io_salida:
                   int idTercetoAsignacion = crear_terceto($1,"_","_");
                   int idTercetoPivot = crear_terceto(nombrePivotAsignacion,"_","_");
                   int idTercetoContar = crear_terceto("@resContar","_","_");
-                  crear_terceto("=","@resContar","0");
+                  int idTercetoCero = crear_terceto("0","_","_");
+                  //Inicializo en cero variable de trabajo
+                  char cadIdTercetoContar[3];
+                  char cadIdTercetoCero[3];
+                  itoa(idTercetoContar,cadIdTercetoContar,10);
+                  itoa(idTercetoCero,cadIdTercetoCero,10);
+                  crear_terceto("=",cadIdTercetoContar,cadIdTercetoCero);
+                  //Incremento variable de trabajo
+                  int idTercetoUno = crear_terceto("1","_","_");
+                  char cadIdTercetoUno[3];
+                  itoa(idTercetoUno,cadIdTercetoUno,10);
+                  int idTercetoIncremento = crear_terceto("+",cadIdTercetoContar,cadIdTercetoUno);
                   while(!colaVacia(&listaCola))
                   {
                     contadorPosiciones++;
@@ -190,7 +201,9 @@ io_salida:
                       valorTercetoComparacion += 3;
                       itoa (valorTercetoComparacion,valorTercetoSaltoCad,10);
                       crear_terceto("BNE",valorTercetoSaltoCad,"_");
-                      crear_terceto("INC","@resContar","_");
+                      char idTercetoAux1[3];
+                      itoa(idTercetoIncremento,idTercetoAux1,10);
+                      crear_terceto("=",cadIdTercetoContar,idTercetoAux1);
                   }
                   //Al terceto de asignacion le pongo el resultado
                   char valorAsig2[3];
