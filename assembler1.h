@@ -141,7 +141,18 @@ void escribir_seccion_codigo(FILE *fpAss)
 				fprintf(fpAss, "\nDisplayString %s", valueSinComillas);
 				fprintf(fpAss, "\nnewLine 1");
 			}
+			else
+			{
+				fprintf(fpAss, "\nDisplayInteger %s,2", vector_tercetos[i-1].ope );
+				fprintf(fpAss, "\nnewLine 1");
+			}
 		}
+		else if (strcmp(vector_tercetos[i].ope,"READ")==0)
+		{
+				fprintf(fpAss, "\nGetInteger %s ", vector_tercetos[i-1].ope);
+				fprintf(fpAss, "\nnewLine 1");
+		}
+			
 	}
 }
 
