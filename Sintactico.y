@@ -2,12 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "prints.h"
+#include "tercetos1.h"
 #include "pila-dinamica.h"
-#include "tercetos.h"
-#include "status.h"
-#include "archivos.h"
-#include "assembler.h"
 #include "ts.h"
 #include "cola-dinamica.h"
 
@@ -28,7 +24,6 @@ int yywrap()
         return 1;
 }
 
-ArrayTercetos aTercetos;
 
 t_cola colaId;
 t_cola listaCola;
@@ -90,6 +85,7 @@ void pprintff(float str) {
 programa_aumentado:
         programa {
                 pprints("COMPILACION EXITOSA");
+                escribir_tercetos();
                 //generarAssembler(&aTercetos);
                 //aTercetos.cantidadTotalElementos=cantidadElementosLista;
         };
@@ -108,22 +104,20 @@ sentencia:
 
 io_lectura:
         READ ID {
-				Terceto tRead;
-
                 modifyTypeTs($2, "INTEGER");
-
-
+                crear_terceto("READ",$2,"_");
         };
 
 io_salida:
         WRITE CONST_STRING {
-
+          crear_terceto("PRINT",$2,"_");
         } | WRITE ID {
         				if(getType($2) != 1)
                 {
                         yyerror("La variable no fue declarada");
                         exit(2);
                 }
+          crear_terceto("PRINT",$2,"_");
         };
 
         contar:
@@ -135,8 +129,6 @@ io_salida:
                           yyerror("La variable no fue declarada para el contar");
                           exit(2);
                   }
-
-
 
                 };
 
@@ -159,19 +151,12 @@ io_salida:
                   //reiniciarTipoDato();
                 }ASIG contar{
 
-
                   while(!colaVacia(&listaCola))
                   {
                     int valor = atoi(sacarDecola(&listaCola));
                   }
 
-
                   //Agrego los contadores al codigo
               };
 
 %%
-
-void status(char *str)
-{
-        crearStatus(str, Eind, Tind, Find, numeracionTercetos);
-}
