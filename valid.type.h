@@ -64,9 +64,9 @@ int validType(char *text, int type)
             printError(DIGITO_MAX, text);
             exit(1);
         }
-        else
+        else if(numero < 0)
         {
-			printError("CTE MENOR A 0 EN LA FUNCION CONTAR", "");
+			       printError("CTE MENOR A 0 EN LA FUNCION CONTAR", "");
             exit(1);
         }
         break;
