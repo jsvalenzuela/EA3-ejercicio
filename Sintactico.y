@@ -14,10 +14,7 @@
 int yylex();
 int yyparse();
 void yyerror(const char *str);
-void status();
 char* getCodOp(char* salto);
-void verificarTipoDato(int tipo);
-void reiniciarTipoDato();
 
 void yyerror(const char *str)
 {
@@ -66,50 +63,6 @@ void pprintff(float str) {
         char *stringValue;
 }
 
-%{
-        // Aux
-        int numeracionTercetos = 0;
-        // Índices
-
-        // Separen los punteros por comentarios que los agrupen
-        int Tind = -1;
-        int Find = -1;
-        int Eind = -1;
-        int Eizqind = -1;
-
-        // Asignacion simple
-        int Aind = -1;
-        int AIind = -1;
-        int ASInd = -1;
-        int ASSind = -1;
-
-        int LVind = -1;
-        int LDind = -1;
-        int Tind1 = -1;
-        int Tind2 = -1;
-        int ELind = -1;
-        int Cind = -1;
-        char* valor_comparacion;
-        int TLind = -1;
-        int TLSalto = -1;
-        int contarInd = -1;
-	int Find1 = -1;
-	int cant_if=0;
-	int i=0;
-	int tipoDatoActual = -1;
-	int cant_var = -1;
-	int cant_asig=-1;
-	int is_or = 0;
-	int PInd=-1;
-	int Auxind=-1;
-	int Auxind2=-1;
-	int Auxind3=-1;
-  int cantidadElementosLista = 0;
-  char elementosListaContar[100];
-  int vectorConstantes[100];
-  int cantidadElementosListaAux = 0;
-
-%}
 
 %type <intValue> CTE
 %type <stringValue> CONST_STRING
@@ -221,34 +174,4 @@ io_salida:
 void status(char *str)
 {
         crearStatus(str, Eind, Tind, Find, numeracionTercetos);
-}
-
-void mostrarTercetos(ArrayTercetos * a){
-	int j;
-	for(j=0;j<(int)a->tamanioUsado; j++){
-		printf("*******************************%d\n",j);
-
-		printf("ISOPERATOR: %d\n", a->array[j].isOperator);
-		printf("VALOR: %d\n", a->array[j].left);
-
-
-
-	}
-}
-
-void verificarTipoDato(int tipo) {
-
-	if(tipoDatoActual == -1) {
-		tipoDatoActual = tipo;
-	}
-
-	if(tipoDatoActual != tipo) {
-		yyerror("No se admiten operaciones aritmeticas con tipo de datos distintos");
-		exit(0);
-	}
-
-}
-
-void reiniciarTipoDato() {
-	tipoDatoActual = -1;
 }
