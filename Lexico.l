@@ -31,8 +31,13 @@ CTE 					{DIGITO}
 "INTEGER"                               { yylval.stringValue = strdup(yytext); return TIPO_INTEGER; }
 "STRING"								{ yylval.stringValue = strdup(yytext); return TIPO_STRING; }
 {CONST_STRING}																			{ validType(yytext, TYPE_STRING); yylval.stringValue = strdup(yytext); return CONST_STRING; }
-{CTE}																	{ validType(yytext, TYPE_INT); yylval.intValue = atoi(yytext); return CTE; }
-
+{CTE}																	{ yylval.intValue = atoi(yytext); return CTE; }
 {ID}                 { validType(yytext, TYPE_ID); yylval.stringValue = strdup(yytext); return ID; }
+"\t"
+"\n"
+"\r"
+"\r\n"
+" "
 
+.           { printf("\nCaracter invalido!\n");  exit(1);}
 %%
