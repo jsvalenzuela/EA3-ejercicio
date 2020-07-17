@@ -19,7 +19,8 @@ char *normalizarCadenaDeclaracion(char *cadena);
 char *normalizaCadenaArchivo(char *cad);
 void generarData(FILE *fpAss);
 void escribir_seccion_codigo(FILE *);
-
+int contadorFinales = 0;
+void generarPartes(FILE *fpAss, char *pivot, char *resultado, int cantidadElementos);
 void escribir_assembler()
 {
     FILE *archivo;
@@ -128,6 +129,8 @@ void escribir_seccion_codigo(FILE *fpAss)
 	int i;
     int indice_terceto = obtenerIndiceTercetos();
 	char aux[100];
+	char pivotBuscar[70];
+	char resultado[70];
 	for(i=0;i <= indice_terceto;i++)
 	{	
 		if(strcmp(vector_tercetos[i].ope,"WRITE")==0)
@@ -152,8 +155,70 @@ void escribir_seccion_codigo(FILE *fpAss)
 				fprintf(fpAss, "\nGetInteger %s ", vector_tercetos[i-1].ope);
 				fprintf(fpAss, "\nnewLine 1");
 		}
+		else if (strcmp(vector_tercetos[i].ope,"@resContar")==0)
+		{
+			strcpy(pivotBuscar,vector_tercetos[i-1].ope);
+			strcpy(resultado,vector_tercetos[i-2].ope);
+			i += 5; //me paro en las constante y cuento elementos
+			int cantidadElementos = 0;
+			while(strcmp(vector_tercetos[i].ope,"CMP")!=0)
+			{
+				cantidadElementos++;
+				i++;
+			}
+			//Genero el codigo de partes
+			generarPartes(fpAss,pivotBuscar,resultado,cantidadElementos);
+			//Avanzo hasta el segundo igual
+			int igual1 = 3 * cantidadElementos;
+			i = i+igual1;
+		}
 			
 	}
+}
+
+void generarPartes(FILE *fpAss, char *pivot, char *resultado, int cantidadElementos)
+{
+	int x;
+	for(x = 0; x < cantidadElementos; x++)
+	{
+		int siguienteElemento = x + 2;
+		if(siguienteElemento > cantidadElementos)
+			siguienteElemento = -1;
+		
+		fprintf(fpAss, "\n\tparte%d:", x+1);
+		fprintf(fpAss, "\n\t ffree");
+		fprintf(fpAss, "\n\t fild %s", pivot);
+		fprintf(fpAss, "\n\t fild posicion%d", x+1);
+		fprintf(fpAss, "\n\t fxch");
+		fprintf(fpAss, "\n\t fcom");
+		fprintf(fpAss,"\n\t fstsw ax");
+		fprintf(fpAss,"\n\t sahf");
+		fprintf(fpAss,"\n\t ffree st(0)");
+		//BRANCH
+		if(siguienteElemento != -1)
+		{
+			fprintf(fpAss,"\n\tjne parte%d",siguienteElemento);
+			fprintf(fpAss, "\n\t ffree");
+			fprintf(fpAss,"\n\t fild %s", resultado);
+			fprintf(fpAss," \n\t fild incremento_const");
+			fprintf(fpAss, "\n\t fadd");
+			fprintf(fpAss,"\n\t fist %s" ,resultado);
+			fprintf(fpAss,"\n\t jmp parte%d",siguienteElemento);
+		}
+		else
+		{
+			fprintf(fpAss,"\n\t jne final%d",contadorFinales);
+			fprintf(fpAss, "\n\t ffree");
+			fprintf(fpAss,"\n\t fild %s", resultado);
+			fprintf(fpAss," \n\t fild incremento_const");
+			fprintf(fpAss, "\n\t fadd");
+			fprintf(fpAss,"\n\t fist %s" ,resultado);
+			fprintf(fpAss,"\n\t jmp final%d",contadorFinales);
+		}
+	
+	}
+	fprintf(fpAss, "\n final%d: \n",contadorFinales);
+	contadorFinales++;
 }
 
 
