@@ -30,6 +30,7 @@ t_cola listaCola;
 int idTercetoAsignacion = -1;
 int idTercetoPivot = -1;
 int idTercetoContar =-1;
+int contadorPosiciones = 0;
 char nombrePivotAsignacion[60];
 
 int main()
@@ -156,9 +157,19 @@ io_salida:
                   int idTercetoContar = crear_terceto("@resContar","_","_");
                   while(!colaVacia(&listaCola))
                   {
+                    contadorPosiciones++;
                     char valorAux[1];
+                    //Trabajo con la posicion para que vaya a la tabla
+                    char contadorCadena[5];
+                    itoa (contadorPosiciones,contadorCadena,10);
                     strcpy(valorAux,sacarDecola(&listaCola));
+                    char cadenaPosicion[20];
+                    strcpy(cadenaPosicion,"posicion");
+                    strcat(cadenaPosicion,contadorCadena);
+                    insertInTs(cadenaPosicion, "CONST_INTE", valorAux, "");
+                    //cargo en el terceto el valor de la contante
                     int valorTerceto = crear_terceto(valorAux,"_","_");
+
                   }
 
                   //Agrego los contadores al codigo
