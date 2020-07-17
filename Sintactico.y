@@ -25,7 +25,7 @@ int yywrap()
 }
 
 
-t_cola colaId;
+t_cola colaIdTercetosPosiciones;
 t_cola listaCola;
 int idTercetoAsignacion = -1;
 int idTercetoPivot = -1;
@@ -37,6 +37,7 @@ int main()
 {
         clean();
         crearCola(&listaCola);
+        crearCola(&colaIdTercetosPosiciones);
         yyparse();
         exit(0);
 }
@@ -109,19 +110,22 @@ sentencia:
 io_lectura:
         READ ID {
                 modifyTypeTs($2, "INTEGER");
-                crear_terceto("READ",$2,"_");
+                crear_terceto($2,"_","_");
+                crear_terceto("READ","_","_");
         };
 
 io_salida:
         WRITE CONST_STRING {
-          crear_terceto("PRINT",$2,"_");
+          crear_terceto($2,"_","_");
+          crear_terceto("PRINT","_","_");
         } | WRITE ID {
         				if(getType($2) != 1)
                 {
                         yyerror("La variable no fue declarada");
                         exit(2);
                 }
-          crear_terceto("PRINT",$2,"_");
+                crear_terceto($2,"_","_");
+                crear_terceto("PRINT","_","_");
         };
 
         contar:
@@ -155,6 +159,7 @@ io_salida:
                   int idTercetoAsignacion = crear_terceto($1,"_","_");
                   int idTercetoPivot = crear_terceto(nombrePivotAsignacion,"_","_");
                   int idTercetoContar = crear_terceto("@resContar","_","_");
+                  crear_terceto("=","@resContar","0");
                   while(!colaVacia(&listaCola))
                   {
                     contadorPosiciones++;
@@ -169,10 +174,30 @@ io_salida:
                     insertInTs(cadenaPosicion, "CONST_INTE", valorAux, "");
                     //cargo en el terceto el valor de la contante
                     int valorTerceto = crear_terceto(valorAux,"_","_");
-
+                    //Acolo el id del terceto leido
+                    char valorTercetoCad[3];
+                    itoa (valorTerceto,valorTercetoCad,10);
+                    ponerEncola(&colaIdTercetosPosiciones,valorTercetoCad);
                   }
-
-                  //Agrego los contadores al codigo
+                  //Genero los tercetos de comparaciones
+                  while(!colaVacia(&colaIdTercetosPosiciones))
+                  {
+                      char valorTercetoPosicion[3];
+                      char valorTercetoSaltoCad[3];
+                      strcpy(valorTercetoPosicion,sacarDecola((&colaIdTercetosPosiciones)));
+                      int valorTercetoComparacion = crear_terceto("CMP",nombrePivotAsignacion,valorTercetoPosicion);
+                      //Le sumo 3 para el salto
+                      valorTercetoComparacion += 3;
+                      itoa (valorTercetoComparacion,valorTercetoSaltoCad,10);
+                      crear_terceto("BNE",valorTercetoSaltoCad,"_");
+                      crear_terceto("INC","@resContar","_");
+                  }
+                  //Al terceto de asignacion le pongo el resultado
+                  char valorAsig2[3];
+                  char valorAsig1[3];
+                  itoa(idTercetoAsignacion,valorAsig1,10);
+                  itoa(idTercetoContar,valorAsig2,10);
+                  crear_terceto("=",valorAsig1,valorAsig2);
               };
 
 %%
